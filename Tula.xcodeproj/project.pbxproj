@@ -1,0 +1,606 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E17FDEC2B7E89A8005DAEC8 /* DetailItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */; };
+		1E17FDEE2B7E89FC005DAEC8 /* DetailCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */; };
+		1E17FDF02B7E8E75005DAEC8 /* ImmersiveIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */; };
+		1E188A422B7FC6C400BAFC8C /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E188A412B7FC6C400BAFC8C /* ItemView.swift */; };
+		1E188A442B82644D00BAFC8C /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E188A432B82644D00BAFC8C /* VolumeView.swift */; };
+		1E1A98502B7648BB00C92D85 /* TulaAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A984F2B7648BB00C92D85 /* TulaAppModel.swift */; };
+		1E1A98522B764D2900C92D85 /* ARSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A98512B764D2900C92D85 /* ARSessionManager.swift */; };
+		1E1A98562B764FE200C92D85 /* PlaceableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A98552B764FE200C92D85 /* PlaceableObject.swift */; };
+		1E1A98582B76502300C92D85 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A98572B76502300C92D85 /* PersistenceManager.swift */; };
+		1E1A985A2B7651FB00C92D85 /* PlaneAnchorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A98592B7651FB00C92D85 /* PlaneAnchorHandler.swift */; };
+		1E1A985C2B76525800C92D85 /* PlaneProjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A985B2B76525800C92D85 /* PlaneProjector.swift */; };
+		1E1A985E2B76527A00C92D85 /* GeometryUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A985D2B76527A00C92D85 /* GeometryUtilities.swift */; };
+		1E1A98602B7653E300C92D85 /* ModelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A985F2B7653E300C92D85 /* ModelLoader.swift */; };
+		1E1A98622B7654F700C92D85 /* PlacementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A98612B7654F700C92D85 /* PlacementState.swift */; };
+		1E31CEA52B696EC100608609 /* ModelViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E31CEA42B696EC100608609 /* ModelViewContent.swift */; };
+		1E46875B2B63E51600F18FB9 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 1E46875A2B63E51600F18FB9 /* RealityKitContent */; };
+		1E46875D2B63E51600F18FB9 /* TulaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E46875C2B63E51600F18FB9 /* TulaApp.swift */; };
+		1E46875F2B63E51600F18FB9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E46875E2B63E51600F18FB9 /* ContentView.swift */; };
+		1E4687612B63E51600F18FB9 /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4687602B63E51600F18FB9 /* ImmersiveView.swift */; };
+		1E4687632B63E51600F18FB9 /* ImageBasedLighting.skybox in Resources */ = {isa = PBXBuildFile; fileRef = 1E4687622B63E51600F18FB9 /* ImageBasedLighting.skybox */; };
+		1E4687652B63E51800F18FB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E4687642B63E51800F18FB9 /* Assets.xcassets */; };
+		1E4687682B63E51800F18FB9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E4687672B63E51800F18FB9 /* Preview Assets.xcassets */; };
+		1E4687732B63E51800F18FB9 /* TulaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4687722B63E51800F18FB9 /* TulaTests.swift */; };
+		1EB1D5722B7E729D004250DA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB1D5712B7E729D004250DA /* DetailView.swift */; };
+		1ED4EF7A2B87AC0B00CC61FD /* PaymentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4EF792B87AC0B00CC61FD /* PaymentButton.swift */; };
+		1ED4EF7C2B87B79000CC61FD /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4EF7B2B87B79000CC61FD /* PlayerViewController.swift */; };
+		1ED4EF7E2B87B83800CC61FD /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4EF7D2B87B83800CC61FD /* PlayerModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1E46876F2B63E51800F18FB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E46874D2B63E51600F18FB9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E4687542B63E51600F18FB9;
+			remoteInfo = Tula;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItemView.swift; sourceTree = "<group>"; };
+		1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCartView.swift; sourceTree = "<group>"; };
+		1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveIntroView.swift; sourceTree = "<group>"; };
+		1E188A412B7FC6C400BAFC8C /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
+		1E188A432B82644D00BAFC8C /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
+		1E1A984F2B7648BB00C92D85 /* TulaAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulaAppModel.swift; sourceTree = "<group>"; };
+		1E1A98512B764D2900C92D85 /* ARSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSessionManager.swift; sourceTree = "<group>"; };
+		1E1A98552B764FE200C92D85 /* PlaceableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceableObject.swift; sourceTree = "<group>"; };
+		1E1A98572B76502300C92D85 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		1E1A98592B7651FB00C92D85 /* PlaneAnchorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneAnchorHandler.swift; sourceTree = "<group>"; };
+		1E1A985B2B76525800C92D85 /* PlaneProjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneProjector.swift; sourceTree = "<group>"; };
+		1E1A985D2B76527A00C92D85 /* GeometryUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryUtilities.swift; sourceTree = "<group>"; };
+		1E1A985F2B7653E300C92D85 /* ModelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLoader.swift; sourceTree = "<group>"; };
+		1E1A98612B7654F700C92D85 /* PlacementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementState.swift; sourceTree = "<group>"; };
+		1E31CEA32B692FDC00608609 /* Tula.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tula.entitlements; sourceTree = "<group>"; };
+		1E31CEA42B696EC100608609 /* ModelViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewContent.swift; sourceTree = "<group>"; };
+		1E4687552B63E51600F18FB9 /* Tula.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tula.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E4687592B63E51600F18FB9 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
+		1E46875C2B63E51600F18FB9 /* TulaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulaApp.swift; sourceTree = "<group>"; };
+		1E46875E2B63E51600F18FB9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1E4687602B63E51600F18FB9 /* ImmersiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveView.swift; sourceTree = "<group>"; };
+		1E4687622B63E51600F18FB9 /* ImageBasedLighting.skybox */ = {isa = PBXFileReference; lastKnownFileType = file.skybox; path = ImageBasedLighting.skybox; sourceTree = "<group>"; };
+		1E4687642B63E51800F18FB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1E4687672B63E51800F18FB9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1E4687692B63E51800F18FB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E46876E2B63E51800F18FB9 /* TulaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TulaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E4687722B63E51800F18FB9 /* TulaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TulaTests.swift; sourceTree = "<group>"; };
+		1EB1D5712B7E729D004250DA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		1ED4EF792B87AC0B00CC61FD /* PaymentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButton.swift; sourceTree = "<group>"; };
+		1ED4EF7B2B87B79000CC61FD /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		1ED4EF7D2B87B83800CC61FD /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1E4687522B63E51600F18FB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E46875B2B63E51600F18FB9 /* RealityKitContent in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E46876B2B63E51800F18FB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E1A98532B764D4C00C92D85 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1E4687602B63E51600F18FB9 /* ImmersiveView.swift */,
+				1E46875E2B63E51600F18FB9 /* ContentView.swift */,
+				1EB1D5712B7E729D004250DA /* DetailView.swift */,
+				1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */,
+				1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */,
+				1E188A412B7FC6C400BAFC8C /* ItemView.swift */,
+				1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */,
+				1E188A432B82644D00BAFC8C /* VolumeView.swift */,
+				1ED4EF7B2B87B79000CC61FD /* PlayerViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1E1A98542B764D6C00C92D85 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1E1A984F2B7648BB00C92D85 /* TulaAppModel.swift */,
+				1E31CEA42B696EC100608609 /* ModelViewContent.swift */,
+				1E1A98512B764D2900C92D85 /* ARSessionManager.swift */,
+				1E1A98552B764FE200C92D85 /* PlaceableObject.swift */,
+				1E1A98572B76502300C92D85 /* PersistenceManager.swift */,
+				1E1A98592B7651FB00C92D85 /* PlaneAnchorHandler.swift */,
+				1E1A985B2B76525800C92D85 /* PlaneProjector.swift */,
+				1E1A985D2B76527A00C92D85 /* GeometryUtilities.swift */,
+				1E1A985F2B7653E300C92D85 /* ModelLoader.swift */,
+				1E1A98612B7654F700C92D85 /* PlacementState.swift */,
+				1ED4EF792B87AC0B00CC61FD /* PaymentButton.swift */,
+				1ED4EF7D2B87B83800CC61FD /* PlayerModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1E1A98632B76592E00C92D85 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1E46874C2B63E51600F18FB9 = {
+			isa = PBXGroup;
+			children = (
+				1E4687572B63E51600F18FB9 /* Tula */,
+				1E4687582B63E51600F18FB9 /* Packages */,
+				1E4687712B63E51800F18FB9 /* TulaTests */,
+				1E4687562B63E51600F18FB9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1E4687562B63E51600F18FB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E4687552B63E51600F18FB9 /* Tula.app */,
+				1E46876E2B63E51800F18FB9 /* TulaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E4687572B63E51600F18FB9 /* Tula */ = {
+			isa = PBXGroup;
+			children = (
+				1E46875C2B63E51600F18FB9 /* TulaApp.swift */,
+				1E1A98542B764D6C00C92D85 /* Model */,
+				1E1A98532B764D4C00C92D85 /* View */,
+				1E1A98632B76592E00C92D85 /* Resources */,
+				1E4687622B63E51600F18FB9 /* ImageBasedLighting.skybox */,
+				1E4687642B63E51800F18FB9 /* Assets.xcassets */,
+				1E4687692B63E51800F18FB9 /* Info.plist */,
+				1E31CEA32B692FDC00608609 /* Tula.entitlements */,
+				1E4687662B63E51800F18FB9 /* Preview Content */,
+			);
+			path = Tula;
+			sourceTree = "<group>";
+		};
+		1E4687582B63E51600F18FB9 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1E4687592B63E51600F18FB9 /* RealityKitContent */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		1E4687662B63E51800F18FB9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1E4687672B63E51800F18FB9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1E4687712B63E51800F18FB9 /* TulaTests */ = {
+			isa = PBXGroup;
+			children = (
+				1E4687722B63E51800F18FB9 /* TulaTests.swift */,
+			);
+			path = TulaTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1E4687542B63E51600F18FB9 /* Tula */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E4687762B63E51800F18FB9 /* Build configuration list for PBXNativeTarget "Tula" */;
+			buildPhases = (
+				1E4687512B63E51600F18FB9 /* Sources */,
+				1E4687522B63E51600F18FB9 /* Frameworks */,
+				1E4687532B63E51600F18FB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tula;
+			packageProductDependencies = (
+				1E46875A2B63E51600F18FB9 /* RealityKitContent */,
+			);
+			productName = Tula;
+			productReference = 1E4687552B63E51600F18FB9 /* Tula.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1E46876D2B63E51800F18FB9 /* TulaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E4687792B63E51800F18FB9 /* Build configuration list for PBXNativeTarget "TulaTests" */;
+			buildPhases = (
+				1E46876A2B63E51800F18FB9 /* Sources */,
+				1E46876B2B63E51800F18FB9 /* Frameworks */,
+				1E46876C2B63E51800F18FB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E4687702B63E51800F18FB9 /* PBXTargetDependency */,
+			);
+			name = TulaTests;
+			productName = TulaTests;
+			productReference = 1E46876E2B63E51800F18FB9 /* TulaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1E46874D2B63E51600F18FB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					1E4687542B63E51600F18FB9 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					1E46876D2B63E51800F18FB9 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 1E4687542B63E51600F18FB9;
+					};
+				};
+			};
+			buildConfigurationList = 1E4687502B63E51600F18FB9 /* Build configuration list for PBXProject "Tula" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1E46874C2B63E51600F18FB9;
+			productRefGroup = 1E4687562B63E51600F18FB9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1E4687542B63E51600F18FB9 /* Tula */,
+				1E46876D2B63E51800F18FB9 /* TulaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1E4687532B63E51600F18FB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E4687652B63E51800F18FB9 /* Assets.xcassets in Resources */,
+				1E4687682B63E51800F18FB9 /* Preview Assets.xcassets in Resources */,
+				1E4687632B63E51600F18FB9 /* ImageBasedLighting.skybox in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E46876C2B63E51800F18FB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1E4687512B63E51600F18FB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E188A442B82644D00BAFC8C /* VolumeView.swift in Sources */,
+				1E1A98602B7653E300C92D85 /* ModelLoader.swift in Sources */,
+				1E31CEA52B696EC100608609 /* ModelViewContent.swift in Sources */,
+				1E46875F2B63E51600F18FB9 /* ContentView.swift in Sources */,
+				1ED4EF7A2B87AC0B00CC61FD /* PaymentButton.swift in Sources */,
+				1EB1D5722B7E729D004250DA /* DetailView.swift in Sources */,
+				1E1A985A2B7651FB00C92D85 /* PlaneAnchorHandler.swift in Sources */,
+				1E1A98622B7654F700C92D85 /* PlacementState.swift in Sources */,
+				1E46875D2B63E51600F18FB9 /* TulaApp.swift in Sources */,
+				1E17FDEE2B7E89FC005DAEC8 /* DetailCartView.swift in Sources */,
+				1E1A98582B76502300C92D85 /* PersistenceManager.swift in Sources */,
+				1E1A985E2B76527A00C92D85 /* GeometryUtilities.swift in Sources */,
+				1ED4EF7E2B87B83800CC61FD /* PlayerModel.swift in Sources */,
+				1E1A98562B764FE200C92D85 /* PlaceableObject.swift in Sources */,
+				1E1A98502B7648BB00C92D85 /* TulaAppModel.swift in Sources */,
+				1E4687612B63E51600F18FB9 /* ImmersiveView.swift in Sources */,
+				1E188A422B7FC6C400BAFC8C /* ItemView.swift in Sources */,
+				1E1A98522B764D2900C92D85 /* ARSessionManager.swift in Sources */,
+				1ED4EF7C2B87B79000CC61FD /* PlayerViewController.swift in Sources */,
+				1E17FDF02B7E8E75005DAEC8 /* ImmersiveIntroView.swift in Sources */,
+				1E1A985C2B76525800C92D85 /* PlaneProjector.swift in Sources */,
+				1E17FDEC2B7E89A8005DAEC8 /* DetailItemView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1E46876A2B63E51800F18FB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E4687732B63E51800F18FB9 /* TulaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1E4687702B63E51800F18FB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E4687542B63E51600F18FB9 /* Tula */;
+			targetProxy = 1E46876F2B63E51800F18FB9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1E4687742B63E51800F18FB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		1E4687752B63E51800F18FB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		1E4687772B63E51800F18FB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Tula/Tula.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Tula/Preview Content\"";
+				DEVELOPMENT_TEAM = FTMC23LTVL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noisederived.Tula;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Debug;
+		};
+		1E4687782B63E51800F18FB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Tula/Tula.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Tula/Preview Content\"";
+				DEVELOPMENT_TEAM = FTMC23LTVL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noisederived.Tula;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Release;
+		};
+		1E46877A2B63E51800F18FB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FTMC23LTVL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noisederived.TulaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tula.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tula";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		1E46877B2B63E51800F18FB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FTMC23LTVL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noisederived.TulaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tula.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tula";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1E4687502B63E51600F18FB9 /* Build configuration list for PBXProject "Tula" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E4687742B63E51800F18FB9 /* Debug */,
+				1E4687752B63E51800F18FB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E4687762B63E51800F18FB9 /* Build configuration list for PBXNativeTarget "Tula" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E4687772B63E51800F18FB9 /* Debug */,
+				1E4687782B63E51800F18FB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E4687792B63E51800F18FB9 /* Build configuration list for PBXNativeTarget "TulaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E46877A2B63E51800F18FB9 /* Debug */,
+				1E46877B2B63E51800F18FB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E46875A2B63E51600F18FB9 /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1E46874D2B63E51600F18FB9 /* Project object */;
+}

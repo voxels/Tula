@@ -1,0 +1,20 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["building47", "ScratchedMetallicPaint", "BlackSiliconeRubber", "Cylinder", "Cylinder_1", "Cylinder_2", "Cylinder_3", "Cube", "Cylinder_4", "Cylinder_5", "Cylinder_6", "Floor", "SmoothConcrete", "SkyboxMaterial", "SkyboxSphere", "Brown_Leather", "Brown_Merino_Wool", "Scene", "GridMaterial", "plant_pots"]
+    def "GridMaterial" (
+        active = true
+        references = @Materials/GridMaterial.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+

@@ -1,0 +1,1680 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["building47", "ScratchedMetallicPaint", "BlackSiliconeRubber", "Cylinder", "Cylinder_1", "Cylinder_2", "Cylinder_3", "Cube", "Cylinder_4", "Cylinder_5", "Cylinder_6", "Floor", "SmoothConcrete", "SkyboxMaterial", "SkyboxSphere", "Brown_Leather", "Brown_Merino_Wool", "Scene", "GridMaterial", "plant_pots"]
+    def "GridMaterial" (
+        active = true
+        references = @Materials/GridMaterial.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "plant_pots" (
+        active = true
+        references = @plant_pots/plant_pots.usdz@
+    )
+    {
+        reorder nameChildren = ["Materials", "Geom"]
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (3.5, 0, -3.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Materials"
+        {
+            over "Copper_Polished"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+            }
+        }
+
+        over "Geom"
+        {
+            over "pot_01"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (-3.991036891937256, 0.3163292706012726, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Cylinder027" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/plant_pots/Materials/Plastic_Matte> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Circle003" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+            }
+
+            over "pot_02"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (-2.5067059993743896, 0.3200504779815674, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Box029"
+                {
+                    over "primitive_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/BlackSiliconeRubber> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "pot_03"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (-1.2039780616760254, 0.21666337549686432, -0.004453182220458984)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Box049" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+            }
+
+            over "pot_04" (
+                active = false
+            )
+            {
+                over "leg"
+                {
+                    over "Box019" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "Box020" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "Box021" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "Box022" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "Box023" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "Box048" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/ScratchedMetallicPaint> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "pot_05"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (3.0069499015808105, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Box001" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box002" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Cylinder002" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Cylinder003" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Cylinder004" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Cylinder005" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ScratchedMetallicPaint> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+            }
+
+            over "pot_06"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (2.0009007453918457, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Box040" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box041" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box042" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box043" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box044" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box045" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box046" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box047" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+            }
+
+            over "pot_07"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (1.0112218856811523, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Box004" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box005" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box006" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box007" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box008" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+
+                over "Box009" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/BlackSiliconeRubber> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                }
+            }
+
+            over "pot_08"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (4.002096176147461, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            over "pot_09"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (5.006946563720703, 0, 0.00013399124145507812)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "Cylinder009"
+                {
+                    quatf xformOp:orient = (0.7071067, 0, -0.7071068, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 4.3192949295043945, 0.23765945434570312)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+
+            over "pot_10"
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (0.0254, 0.0254, 0.0254)
+                double3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def "Scene" (
+        active = true
+        references = @Scene.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (3.5, 0, -3.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Bigleaf_Hydrangea_LOD0_Var1_vgztealha"
+        {
+            float3 xformOp:translate = (1, 0.18627384, 0)
+
+            over "Materials"
+            {
+                over "BigLeafHydrangeaMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Bigleaf_Hydrangea_LOD0_Var1_vgztealha/Materials/BigLeafHydrangeaMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        float2 ui:nodegraph:node:pos = (94.27132, -99.32081)
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                        int ui:nodegraph:node:stackingOrder = 75
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Cat_Palm_LOD0_Var1_tjejafeia"
+        {
+            float3 xformOp:translate = (-1.2, 0.23557678, 0)
+
+            over "Materials"
+            {
+                over "CatPalmMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Cat_Palm_LOD0_Var1_tjejafeia/Materials/CatPalmMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        string inputs:filtertype
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Field_Poppy_LOD0_Var3_vmcobd0ja"
+        {
+            float3 xformOp:translate = (2, 0.39774615, 0)
+
+            over "Materials"
+            {
+                over "FieldPoppyMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:diffuseColor.connect = </Root/Scene/Field_Poppy_LOD0_Var3_vmcobd0ja/Materials/FieldPoppyMat/Image.outputs:out>
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Field_Poppy_LOD0_Var3_vmcobd0ja/Materials/FieldPoppyMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        string inputs:filtertype
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Gazania_LOD0_Var3_thcpfatr"
+        {
+            float3 xformOp:translate = (3, 0.40782082, 0)
+
+            over "Materials"
+            {
+                over "GazaniaMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Gazania_LOD0_Var3_thcpfatr/Materials/GazaniaMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Ginger_Lily_LOD0_Var4_ud5fffgja"
+        {
+            float3 xformOp:scale = (0.008, 0.008, 0.008)
+            float3 xformOp:translate = (-2.5301027, 0.5708139, 0.07074356)
+
+            over "Materials"
+            {
+                over "GingerLilyMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Ginger_Lily_LOD0_Var4_ud5fffgja/Materials/GingerLilyMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Red_Lachenalia_LOD0_Var4_ug4jdb2ja"
+        {
+            float3 xformOp:translate = (4, 0.31371376, 0)
+
+            over "Materials"
+            {
+                over "RedLachenaliaMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Red_Lachenalia_LOD0_Var4_ug4jdb2ja/Materials/RedLachenaliaMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        string inputs:filtertype
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "Violet_Wood_Sorrel_LOD0_Var5_uchkajuia"
+        {
+            float3 xformOp:translate = (-4, 0.6248086, 0)
+
+            over "Materials"
+            {
+                over "VioletWoodSorrelMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Violet_Wood_Sorrel_LOD0_Var5_uchkajuia/Materials/VioletWoodSorrelMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+
+        over "spirito"
+        {
+            float3 xformOp:scale = (1.5, 1.5, 1.5)
+            float3 xformOp:translate = (5.0839844, 0.23914045, -0.14088655)
+
+            over "Materials"
+            {
+                over "textured_0"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (0, 109.5)
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "surfaceShader"
+                    {
+                        float inputs:occlusion = 1
+                    }
+                }
+            }
+        }
+
+        over "Amaryllis_LOD0_Var6_sgzkv"
+        {
+            float3 xformOp:translate = (-0.00063347816, 0.18561882, 0.013947964)
+
+            over "Materials"
+            {
+                over "AmaryllisMat"
+                {
+                    float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+
+                    over "Image"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_1"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_3"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_4"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "Image_5"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+
+                    over "PreviewSurface"
+                    {
+                        color3f inputs:emissiveColor.connect = </Root/Scene/Amaryllis_LOD0_Var6_sgzkv/Materials/AmaryllisMat/Image.outputs:out>
+                        float2 ui:nodegraph:node:size = (159.5, 307)
+                    }
+
+                    over "Image_2"
+                    {
+                        float2 ui:nodegraph:node:size = (148.5, 199)
+                    }
+                }
+            }
+        }
+    }
+
+    def "building47" (
+        active = true
+        references = @Building47/building47.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:translate = (0.4010811, 1.1920929e-7, -7.62996)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Geom"
+        {
+            over "Cube" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Materials"
+        {
+            over "Material"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "surfaceShader"
+                {
+                    float inputs:occlusion = 1
+                }
+            }
+
+            over "building47"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "surfaceShader"
+                {
+                    float inputs:occlusion = 1
+                }
+            }
+
+            over "building47_terrace"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "surfaceShader"
+                {
+                    float inputs:occlusion = 1
+                }
+            }
+
+            over "Building_plants"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "surfaceShader"
+                {
+                    float inputs:occlusion = 1
+                }
+            }
+
+            over "Building_elements"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "surfaceShader"
+                {
+                    float inputs:occlusion = 1
+                }
+            }
+        }
+    }
+
+    def "ScratchedMetallicPaint" (
+        active = true
+        references = @ScratchedMetallicPaint.usdz@
+    )
+    {
+        color3f inputs:Basecolor_Tint (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-56.812614, 67.17455)
+                    float2 sizeInSubgraph = (161, 53)
+                    int stackingOrderInSubgraph = 2344
+                }
+            }
+        )
+        float2 inputs:UV_Scale (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-725.2588, 351.55255)
+                    float2 sizeInSubgraph = (139, 53)
+                    int stackingOrderInSubgraph = 2272
+                }
+            }
+        )
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (182, 99)
+
+        over "Dot"
+        {
+            float2 ui:nodegraph:node:size = (44, 18)
+        }
+
+        over "multiply"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "add"
+        {
+            float2 ui:nodegraph:node:size = (63, 37)
+        }
+
+        over "PreviewSurface"
+        {
+            float2 ui:nodegraph:node:size = (149, 199)
+        }
+
+        over "Mix"
+        {
+            float2 ui:nodegraph:node:size = (109, 145)
+        }
+
+        over "Swizzle"
+        {
+            float2 ui:nodegraph:node:size = (133, 40)
+        }
+
+        over "Swizzle_1"
+        {
+            float2 ui:nodegraph:node:size = (145, 53)
+        }
+
+        over "Multiply_1"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "BaseColor"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Roughness"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Metallic"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Normal"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+    }
+
+    def "BlackSiliconeRubber" (
+        active = true
+        references = @Materials/BlackSiliconeRubber.usdz@
+    )
+    {
+        color3f inputs:Basecolor_Tint (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-45.51249, 49.172512)
+                    float2 sizeInSubgraph = (161, 53)
+                    int stackingOrderInSubgraph = 2269
+                }
+            }
+        )
+        float2 inputs:UV_Scale (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-725.2588, 351.55255)
+                    float2 sizeInSubgraph = (139, 53)
+                    int stackingOrderInSubgraph = 2272
+                }
+            }
+        )
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (182, 99)
+
+        over "Mix"
+        {
+            float2 ui:nodegraph:node:size = (109, 145)
+        }
+
+        over "Swizzle_1"
+        {
+            float2 ui:nodegraph:node:size = (145, 53)
+        }
+
+        over "Swizzle"
+        {
+            float2 ui:nodegraph:node:size = (133, 40)
+        }
+
+        over "Multiply_1"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "Dot"
+        {
+            float2 ui:nodegraph:node:size = (44, 18)
+        }
+
+        over "multiply"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "add"
+        {
+            float2 ui:nodegraph:node:size = (63, 37)
+        }
+
+        over "PreviewSurface"
+        {
+            float2 ui:nodegraph:node:size = (149, 199)
+        }
+
+        over "Roughness"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Metallic"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Normal"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "BaseColor"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+    }
+
+    def Cylinder "Cylinder" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.9, 0.2, 0.9)
+        float3 xformOp:translate = (-0.48743454, 0.60216683, -3.4794886)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/Cylinder/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def "Brown_Leather" (
+        active = true
+        references = @BrownLeather.usdz@
+    )
+    {
+        color3f inputs:Basecolor_Tint (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-45.51249, 49.172512)
+                    float2 sizeInSubgraph = (161, 53)
+                    int stackingOrderInSubgraph = 2268
+                }
+            }
+        )
+        float2 inputs:UV_Scale (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-695.3267, 352.1356)
+                    float2 sizeInSubgraph = (139, 53)
+                    int stackingOrderInSubgraph = 2240
+                }
+            }
+        )
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (182, 99)
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Mix"
+        {
+            float2 ui:nodegraph:node:size = (109, 145)
+        }
+
+        over "Swizzle_1"
+        {
+            float2 ui:nodegraph:node:size = (145, 53)
+        }
+
+        over "Swizzle"
+        {
+            float2 ui:nodegraph:node:size = (133, 40)
+        }
+
+        over "Multiply_1"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "Dot"
+        {
+            float2 ui:nodegraph:node:size = (44, 18)
+        }
+
+        over "multiply"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "add"
+        {
+            float2 ui:nodegraph:node:size = (63, 37)
+        }
+
+        over "PreviewSurface"
+        {
+            float2 ui:nodegraph:node:size = (149, 199)
+        }
+
+        over "BaseColor"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Roughness"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Metallic"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Normal"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+    }
+
+    def "Brown_Merino_Wool" (
+        active = true
+        references = @BrownMerinoWool.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Cylinder "Cylinder_1" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 0.2, 1)
+        float3 xformOp:translate = (1.0001991, 0.60216683, -3.4794886)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_1/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cylinder "Cylinder_2" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.8, 0.2, 0.8)
+        float3 xformOp:translate = (2.2971363, 0.28577125, -3.4794054)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_2/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cylinder "Cylinder_3" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1.6, 0.19999994, 1.6)
+        float3 xformOp:translate = (3.4941394, 0.19843003, -3.4794054)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_3/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cube "Cube" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 0.2
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (2.4, 0.2, 0.9)
+        float3 xformOp:translate = (4.514113, 0.2032765, -3.4951992)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/Cube/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cylinder "Cylinder_4" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.7999998, 0.19999994, 0.7999998)
+        float3 xformOp:translate = (5.501007, 0.40165335, -3.4794054)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_4/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cylinder "Cylinder_5" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1.05, 0.19999994, 1.05)
+        float3 xformOp:translate = (6.5087085, 0.40165335, -3.4794054)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_5/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cylinder "Cylinder_6" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.2
+        rel material:binding = </Root/Brown_Merino_Wool> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.9, 0.19999994, 0.9)
+        float3 xformOp:translate = (7.5056906, 0.24472415, -3.4794054)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Cylinder_6/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cube "Floor" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/SmoothConcrete> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double size = 100
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 2.220446e-16, 1)
+        float3 xformOp:translate = (0, -0.0001, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            token outputs:surface.connect = </Root/Floor/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def "SmoothConcrete" (
+        active = true
+        references = @SmoothConcrete.usdz@
+    )
+    {
+        color3f inputs:Basecolor_Tint (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-56.812614, 67.17455)
+                    float2 sizeInSubgraph = (161, 53)
+                    int stackingOrderInSubgraph = 2344
+                }
+            }
+        )
+        float2 inputs:UV_Scale (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-725.2588, 351.55255)
+                    float2 sizeInSubgraph = (139, 53)
+                    int stackingOrderInSubgraph = 2272
+                }
+            }
+        )
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (182, 99)
+
+        over "Dot"
+        {
+            float2 ui:nodegraph:node:size = (44, 18)
+        }
+
+        over "multiply"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "add"
+        {
+            float2 ui:nodegraph:node:size = (63, 37)
+        }
+
+        over "PreviewSurface"
+        {
+            float2 ui:nodegraph:node:size = (149, 199)
+        }
+
+        over "Mix"
+        {
+            float2 ui:nodegraph:node:size = (109, 145)
+        }
+
+        over "Swizzle"
+        {
+            float2 ui:nodegraph:node:size = (133, 40)
+        }
+
+        over "Swizzle_1"
+        {
+            float2 ui:nodegraph:node:size = (145, 53)
+        }
+
+        over "Multiply_1"
+        {
+            float2 ui:nodegraph:node:size = (61, 36)
+        }
+
+        over "BaseColor"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Roughness"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Metallic"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+
+        over "Normal"
+        {
+            float2 ui:nodegraph:node:size = (159, 235)
+        }
+    }
+
+    def Material "SkyboxMaterial"
+    {
+        token inputs:frame:stPrimvarName = "st"
+        token outputs:mtlx:surface.connect = </Root/SkyboxMaterial/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/SkyboxMaterial/GeometryModifier.outputs:out>
+        token outputs:surface.connect = </Root/SkyboxMaterial/UsdPreviewSurface.outputs:surface>
+        string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:realitykit:vertex", "outputs:realitykit:vertex"]
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (300, 99.5)
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (182, 99)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 9
+
+        def Shader "PreviewSurface" (
+            active = false
+        )
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            float inputs:clearcoat
+            float inputs:clearcoatRoughness
+            color3f inputs:diffuseColor.connect = </Root/SkyboxMaterial/Image.outputs:out>
+            color3f inputs:emissiveColor.connect = </Root/SkyboxMaterial/Image.outputs:out>
+            float inputs:ior
+            float inputs:metallic
+            float3 inputs:normal = (0, 0, 1)
+            float inputs:occlusion
+            float inputs:roughness
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (74.5, 99.5)
+            float2 ui:nodegraph:node:size = (160, 307)
+            int ui:nodegraph:node:stackingOrder = 7
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:diffuseColor", "Advanced", "inputs:opacityThreshold", "inputs:clearcoatRoughness", "inputs:normal"]
+        }
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            asset inputs:file = @skybox_reduced.png@
+            string inputs:filtertype
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-202.21484, 12.8046875)
+            float2 ui:nodegraph:node:size = (149, 199)
+            int ui:nodegraph:node:stackingOrder = 8
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file"]
+        }
+
+        def Shader "UsdPreviewSurface" (
+            active = true
+        )
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor.connect = </Root/SkyboxMaterial/diffuseColor.outputs:rgb>
+            color3f inputs:emissiveColor = (0, 0, 0)
+            color3f inputs:emissiveColor.connect = </Root/SkyboxMaterial/emissiveColor.outputs:rgb>
+            float inputs:occlusion = 1
+            float inputs:opacityThreshold = 0
+            token outputs:surface
+        }
+
+        def Shader "diffuseColor"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @ImageBasedLight.exr@
+            float2 inputs:st.connect = </Root/SkyboxMaterial/diffuseColor/TexCoordReader.outputs:result>
+            color3f outputs:rgb
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/SkyboxMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "emissiveColor"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @ImageBasedLight.exr@
+            float2 inputs:st.connect = </Root/SkyboxMaterial/emissiveColor/TexCoordReader.outputs:result>
+            color3f outputs:rgb
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/SkyboxMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "opacityThreshold"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @skybox_reduced.png@
+            float2 inputs:st.connect = </Root/SkyboxMaterial/opacityThreshold/TexCoordReader.outputs:result>
+            float outputs:r
+
+            def Shader "TexCoordReader"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname.connect = </Root/SkyboxMaterial/UsdPreviewSurface.inputs:frame:stPrimvarName>
+                float2 outputs:result
+            }
+        }
+
+        def Shader "GeometryModifier" (
+            active = false
+        )
+        {
+            uniform token info:id = "ND_realitykit_geometrymodifier_vertexshader"
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (301.39453, 211.01172)
+            float2 ui:nodegraph:node:size = (197, 325)
+            int ui:nodegraph:node:stackingOrder = 10
+        }
+    }
+
+    def Sphere "SkyboxSphere" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/SkyboxMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 1
+        float3 xformOp:scale = (99.99999, 99.99999, 99.99999)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/SkyboxSphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+}
+
