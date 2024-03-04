@@ -79,8 +79,7 @@
     "objectMetadataList" : [
       [
         "5B758573-A88D-4107-9510-A06C3659CFF1",
-        "Root",
-        "Scene"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -88,7 +87,8 @@
       },
       [
         "5B758573-A88D-4107-9510-A06C3659CFF1",
-        "Root"
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -98,14 +98,6 @@
   },
   "7CE4E231-4A50-4F87-ACB5-B52A811C88DB" : {
     "objectMetadataList" : [
-      [
-        "7CE4E231-4A50-4F87-ACB5-B52A811C88DB",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "7CE4E231-4A50-4F87-ACB5-B52A811C88DB",
         "Root",
@@ -133,6 +125,14 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "7CE4E231-4A50-4F87-ACB5-B52A811C88DB",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },
@@ -152,7 +152,8 @@
     "objectMetadataList" : [
       [
         "8A031C70-C8C8-4CB5-AEFD-D6E09CD156A7",
-        "Root"
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -193,8 +194,7 @@
       },
       [
         "8A031C70-C8C8-4CB5-AEFD-D6E09CD156A7",
-        "Root",
-        "Scene"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -237,8 +237,7 @@
       },
       [
         "9D13F8F3-3B44-422C-B17A-579B4B65C42F",
-        "Root",
-        "plant_pots"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -246,7 +245,8 @@
       },
       [
         "9D13F8F3-3B44-422C-B17A-579B4B65C42F",
-        "Root"
+        "Root",
+        "plant_pots"
       ],
       {
         "isExpanded" : true,
@@ -259,6 +259,15 @@
       [
         "9D53D191-9AD1-416A-863C-40306D82899B",
         "Root",
+        "plant_pots"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "9D53D191-9AD1-416A-863C-40306D82899B",
+        "Root",
         "plant_pots",
         "Geom"
       ],
@@ -268,25 +277,16 @@
       },
       [
         "9D53D191-9AD1-416A-863C-40306D82899B",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "9D53D191-9AD1-416A-863C-40306D82899B",
         "Root",
         "Scene"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "9D53D191-9AD1-416A-863C-40306D82899B",
-        "Root",
-        "plant_pots"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "9D53D191-9AD1-416A-863C-40306D82899B",
-        "Root"
       ],
       {
         "isExpanded" : true,
@@ -308,6 +308,15 @@
       },
       [
         "10F31C78-FDF9-4D11-8247-1ACF930370B5",
+        "Root",
+        "plant_pots"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "10F31C78-FDF9-4D11-8247-1ACF930370B5",
         "Root"
       ],
       {
@@ -322,30 +331,11 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
-      [
-        "10F31C78-FDF9-4D11-8247-1ACF930370B5",
-        "Root",
-        "plant_pots"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       }
     ]
   },
   "018BCE51-A75B-470D-BFC2-3257406906D6" : {
     "objectMetadataList" : [
-      [
-        "018BCE51-A75B-470D-BFC2-3257406906D6",
-        "Root",
-        "Scene",
-        "Field_Poppy_LOD0_Var3_vmcobd0ja"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "018BCE51-A75B-470D-BFC2-3257406906D6",
         "Root",
@@ -368,11 +358,7 @@
       },
       [
         "018BCE51-A75B-470D-BFC2-3257406906D6",
-        "Root",
-        "Scene",
-        "Field_Poppy_LOD0_Var3_vmcobd0ja",
-        "Materials",
-        "FieldPoppyMat"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -380,7 +366,21 @@
       },
       [
         "018BCE51-A75B-470D-BFC2-3257406906D6",
-        "Root"
+        "Root",
+        "Scene",
+        "Field_Poppy_LOD0_Var3_vmcobd0ja"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "018BCE51-A75B-470D-BFC2-3257406906D6",
+        "Root",
+        "Scene",
+        "Field_Poppy_LOD0_Var3_vmcobd0ja",
+        "Materials",
+        "FieldPoppyMat"
       ],
       {
         "isExpanded" : true,
@@ -429,7 +429,8 @@
       [
         "23A22451-32F0-4138-91EF-CEE6134FC3B0",
         "Root",
-        "Scene"
+        "Scene",
+        "spirito"
       ],
       {
         "isExpanded" : true,
@@ -449,8 +450,7 @@
       [
         "23A22451-32F0-4138-91EF-CEE6134FC3B0",
         "Root",
-        "Scene",
-        "spirito"
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -470,9 +470,7 @@
     "objectMetadataList" : [
       [
         "48CF8DFD-47AF-40C2-9453-F769F5C23D80",
-        "Root",
-        "plant_pots",
-        "Geom"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -498,7 +496,9 @@
       },
       [
         "48CF8DFD-47AF-40C2-9453-F769F5C23D80",
-        "Root"
+        "Root",
+        "plant_pots",
+        "Geom"
       ],
       {
         "isExpanded" : true,
@@ -516,8 +516,7 @@
       [
         "55A9C680-7AB5-43FC-81D7-4F9F44EE4A22",
         "Root",
-        "plant_pots",
-        "Geom"
+        "plant_pots"
       ],
       {
         "isExpanded" : true,
@@ -543,8 +542,7 @@
       },
       [
         "55A9C680-7AB5-43FC-81D7-4F9F44EE4A22",
-        "Root",
-        "plant_pots"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -552,7 +550,9 @@
       },
       [
         "55A9C680-7AB5-43FC-81D7-4F9F44EE4A22",
-        "Root"
+        "Root",
+        "plant_pots",
+        "Geom"
       ],
       {
         "isExpanded" : true,
@@ -600,6 +600,14 @@
     "objectMetadataList" : [
       [
         "564D22C1-B7FA-4864-8DA0-4D4866DAA667",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "564D22C1-B7FA-4864-8DA0-4D4866DAA667",
         "Root",
         "Scene",
         "Cat_Palm_LOD0_Var1_tjejafeia",
@@ -622,17 +630,7 @@
         "564D22C1-B7FA-4864-8DA0-4D4866DAA667",
         "Root",
         "Scene",
-        "Cat_Palm_LOD0_Var1_tjejafeia",
-        "Materials",
-        "CatPalmMat"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "564D22C1-B7FA-4864-8DA0-4D4866DAA667",
-        "Root"
+        "Cat_Palm_LOD0_Var1_tjejafeia"
       ],
       {
         "isExpanded" : true,
@@ -642,7 +640,9 @@
         "564D22C1-B7FA-4864-8DA0-4D4866DAA667",
         "Root",
         "Scene",
-        "Cat_Palm_LOD0_Var1_tjejafeia"
+        "Cat_Palm_LOD0_Var1_tjejafeia",
+        "Materials",
+        "CatPalmMat"
       ],
       {
         "isExpanded" : true,
@@ -652,14 +652,6 @@
   },
   "935F1794-89CE-45D9-B282-5943F9B147AA" : {
     "objectMetadataList" : [
-      [
-        "935F1794-89CE-45D9-B282-5943F9B147AA",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "935F1794-89CE-45D9-B282-5943F9B147AA",
         "Root",
@@ -683,6 +675,14 @@
         "935F1794-89CE-45D9-B282-5943F9B147AA",
         "Root",
         "plant_pots"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "935F1794-89CE-45D9-B282-5943F9B147AA",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -711,8 +711,7 @@
     "objectMetadataList" : [
       [
         "52073CFE-0395-4548-915B-BBC761A51049",
-        "Root",
-        "Scene"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -720,7 +719,8 @@
       },
       [
         "52073CFE-0395-4548-915B-BBC761A51049",
-        "Root"
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -745,6 +745,15 @@
       [
         "3914229A-598A-4927-B2C0-E0A5D61C34FA",
         "Root",
+        "Scene"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3914229A-598A-4927-B2C0-E0A5D61C34FA",
+        "Root",
         "plant_pots",
         "Geom"
       ],
@@ -756,15 +765,6 @@
         "3914229A-598A-4927-B2C0-E0A5D61C34FA",
         "Root",
         "plant_pots"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "3914229A-598A-4927-B2C0-E0A5D61C34FA",
-        "Root",
-        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -784,8 +784,7 @@
     "objectMetadataList" : [
       [
         "A9F6AE7D-201D-4CA7-89BC-66CE70B34B14",
-        "Root",
-        "Scene"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -793,7 +792,8 @@
       },
       [
         "A9F6AE7D-201D-4CA7-89BC-66CE70B34B14",
-        "Root"
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -827,6 +827,15 @@
   },
   "AF5E0131-EDFD-4F7B-BAAB-93DEF296138F" : {
     "objectMetadataList" : [
+      [
+        "AF5E0131-EDFD-4F7B-BAAB-93DEF296138F",
+        "Root",
+        "alocasia"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "AF5E0131-EDFD-4F7B-BAAB-93DEF296138F",
         "Root"
@@ -878,7 +887,9 @@
       [
         "B3A51177-DAAD-4F29-8E4E-33D6A3F2941F",
         "Root",
-        "Scene"
+        "Scene",
+        "Bigleaf_Hydrangea_LOD0_Var1_vgztealha",
+        "_7qjs_Var1_LOD0"
       ],
       {
         "isExpanded" : true,
@@ -899,17 +910,6 @@
         "B3A51177-DAAD-4F29-8E4E-33D6A3F2941F",
         "Root",
         "Scene",
-        "Bigleaf_Hydrangea_LOD0_Var1_vgztealha",
-        "_7qjs_Var1_LOD0"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "B3A51177-DAAD-4F29-8E4E-33D6A3F2941F",
-        "Root",
-        "Scene",
         "Bigleaf_Hydrangea_LOD0_Var1_vgztealha"
       ],
       {
@@ -919,6 +919,15 @@
       [
         "B3A51177-DAAD-4F29-8E4E-33D6A3F2941F",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "B3A51177-DAAD-4F29-8E4E-33D6A3F2941F",
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -954,8 +963,7 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -963,7 +971,8 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -1005,15 +1014,6 @@
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
         "Root",
-        "Scene"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
         "Scene",
         "Amaryllis_LOD0_Var6_sgzkv"
       ],
@@ -1034,9 +1034,7 @@
       },
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
-        "GridMaterial",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -1044,7 +1042,18 @@
       },
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root"
+        "Root",
+        "Scene"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D66134B1-3681-4A8E-AFE5-29F257229F3B",
+        "Root",
+        "GridMaterial",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -1054,6 +1063,17 @@
   },
   "DC36D302-4BB1-4228-AE68-6A16BFCBA4D1" : {
     "objectMetadataList" : [
+      [
+        "DC36D302-4BB1-4228-AE68-6A16BFCBA4D1",
+        "Root",
+        "Scene",
+        "Ginger_Lily_LOD0_Var4_ud5fffgja",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "DC36D302-4BB1-4228-AE68-6A16BFCBA4D1",
         "Root",
@@ -1068,17 +1088,6 @@
         "Root",
         "Scene",
         "Ginger_Lily_LOD0_Var4_ud5fffgja"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "DC36D302-4BB1-4228-AE68-6A16BFCBA4D1",
-        "Root",
-        "Scene",
-        "Ginger_Lily_LOD0_Var4_ud5fffgja",
-        "Materials"
       ],
       {
         "isExpanded" : true,
@@ -1125,6 +1134,18 @@
         "Root",
         "Scene",
         "Red_Lachenalia_LOD0_Var4_ug4jdb2ja",
+        "Materials",
+        "RedLachenaliaMat"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "E42EDD4A-0012-42C7-9F95-6E627F5B809A",
+        "Root",
+        "Scene",
+        "Red_Lachenalia_LOD0_Var4_ug4jdb2ja",
         "Materials"
       ],
       {
@@ -1153,18 +1174,6 @@
         "E42EDD4A-0012-42C7-9F95-6E627F5B809A",
         "Root",
         "Scene"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "E42EDD4A-0012-42C7-9F95-6E627F5B809A",
-        "Root",
-        "Scene",
-        "Red_Lachenalia_LOD0_Var4_ug4jdb2ja",
-        "Materials",
-        "RedLachenaliaMat"
       ],
       {
         "isExpanded" : true,
@@ -1200,7 +1209,8 @@
     "objectMetadataList" : [
       [
         "FBC894E1-9DAA-42D0-A74C-60B9AEF6964A",
-        "Root"
+        "Root",
+        "Scene"
       ],
       {
         "isExpanded" : true,
@@ -1208,8 +1218,7 @@
       },
       [
         "FBC894E1-9DAA-42D0-A74C-60B9AEF6964A",
-        "Root",
-        "Scene"
+        "Root"
       ],
       {
         "isExpanded" : true,
