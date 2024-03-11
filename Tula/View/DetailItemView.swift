@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailItemView: View {
     let appState: TulaAppModel
-    public let modelContent:[ModelViewContent]
+    @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
     @State private var currentIndex = 0
     @State private var showVideo = false
@@ -23,7 +23,7 @@ struct DetailItemView: View {
                         LazyHStack(spacing: 0, content: {
                             let countObjects = modelContent.count
                             ForEach(0..<countObjects, id: \.self) { index in
-                                ItemView(appState: appState, content: modelContent[index], showVideo: $showVideo)
+                                ItemView(appState: appState, content: $modelContent[index], showVideo: $showVideo)
                                     .frame(width: geo.size.width, height:geo.size.height - 48)
                                     .id(index)
                                     .padding(0)
@@ -109,7 +109,7 @@ struct DetailItemView: View {
 }
 
 #Preview {
-    DetailItemView(appState: TulaAppModel(), modelContent: TulaApp.defaultContent, content:.constant( TulaApp.defaultContent.first!))
+    DetailItemView(appState: TulaAppModel(), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!))
 }
 
 extension Comparable {

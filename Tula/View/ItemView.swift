@@ -13,9 +13,8 @@ import RealityKitContent
 @MainActor
 struct ItemView: View {
     let appState: TulaAppModel
-    public var content:ModelViewContent
+    @Binding public var content:ModelViewContent
     @Binding public var showVideo:Bool
-    @State private var selectedImageName:String = "euphorbia-inermis-tula-house-1"
     @State private var selectedPrice:Float = 0
     @State private var quantity:Int = 0
     @State private var flowerModelAnchorEntity:Entity?
@@ -27,19 +26,75 @@ struct ItemView: View {
         if !showVideo {
             
             GeometryReader(content: { geo in
-                
-                VStack(alignment: .center, content: {
-
+                VStack(alignment: .center, spacing:0, content: {
                     Text(content.title).font(.largeTitle)
                         .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
-                    
-                    HStack(content: {
-                        VStack{
-                            Image(selectedImageName)
-                                .resizable()
-                                .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                                .cornerRadius(30)
-                                .frame(width:388)
+                    HStack(alignment:.center, spacing:0, content: {
+                        VStack(spacing:0){
+                            ScrollViewReader(content: { scrollViewProxy in
+                                
+                            ScrollView(.horizontal){
+                                HStack(alignment:.center,spacing:0) {
+                                    Image(content.image1URLString)
+                                        .resizable()
+                                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .cornerRadius(30)
+                                        .frame(maxWidth:  (geo.size.width / 3 - 48))
+                                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                        .clipShape(
+                                            .rect(
+                                                topLeadingRadius: 30,
+                                                bottomLeadingRadius: 30,
+                                                bottomTrailingRadius: 30,
+                                                topTrailingRadius: 30
+                                            )
+                                        ).id(0)
+                                    Image(content.image2URLString)
+                                        .resizable()
+                                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .cornerRadius(30)
+                                        .frame(maxWidth:  (geo.size.width / 3 - 48))
+                                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                        .clipShape(
+                                            .rect(
+                                                topLeadingRadius: 30,
+                                                bottomLeadingRadius: 30,
+                                                bottomTrailingRadius: 30,
+                                                topTrailingRadius: 30
+                                            )
+                                        ).id(1)
+                                    Image(content.image3URLString)
+                                        .resizable()
+                                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .cornerRadius(30)
+                                        .frame(maxWidth:  (geo.size.width / 3 - 48))
+                                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                        .clipShape(
+                                            .rect(
+                                                topLeadingRadius: 30,
+                                                bottomLeadingRadius: 30,
+                                                bottomTrailingRadius: 30,
+                                                topTrailingRadius: 30
+                                            )
+                                        ).id(2)
+                                    if let image4URLString = content.image4URLString {
+                                        Image(image4URLString)
+                                            .resizable()
+                                            .aspectRatio(contentMode:.fill)
+                                            .cornerRadius(30)
+                                            .frame(maxWidth:  (geo.size.width / 3 - 48))
+                                            .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                            .clipShape(
+                                                .rect(
+                                                    topLeadingRadius: 30,
+                                                    bottomLeadingRadius: 30,
+                                                    bottomTrailingRadius: 30,
+                                                    topTrailingRadius: 30
+                                                )
+                                            ).id(3)
+                                    }
+                                }
+                            }.scrollTargetBehavior(.paging)
                             HStack {
                                 Image(content.image1URLString).resizable()
                                     .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
@@ -49,7 +104,7 @@ struct ItemView: View {
                                     .cornerRadius(16)
                                 
                                     .onTapGesture {
-                                        selectedImageName = content.image1URLString
+                                        scrollViewProxy.scrollTo(0, anchor: .center)
                                     }
                                 Image(content.image2URLString).resizable()
                                     .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
@@ -58,7 +113,7 @@ struct ItemView: View {
                                     .hoverEffect()
                                     .cornerRadius(16)
                                     .onTapGesture {
-                                        selectedImageName = content.image2URLString
+                                        scrollViewProxy.scrollTo(1, anchor: .center)
                                     }
                                 Image(content.image3URLString).resizable()
                                     .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
@@ -66,9 +121,8 @@ struct ItemView: View {
                                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                                     .hoverEffect()
                                     .cornerRadius(16)
-                                
                                     .onTapGesture {
-                                        selectedImageName = content.image3URLString
+                                        scrollViewProxy.scrollTo(2, anchor: .center)
                                     }
                                 if let imageURLString = content.image4URLString, !imageURLString.isEmpty {
                                     Image(imageURLString).resizable()
@@ -77,19 +131,18 @@ struct ItemView: View {
                                         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                                         .hoverEffect()
                                         .cornerRadius(16)
-                                    
                                         .onTapGesture {
-                                            selectedImageName = imageURLString
+                                            scrollViewProxy.scrollTo(3, anchor: .center)
                                         }
                                 }
                             }
                             .frame(maxHeight:100)
                             .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                            
-                        }
-                        .frame(width: geo.size.width / 3 - 48).padding(24)
-                        VStack{
+                            })
+                        }.padding(24)
+                        VStack(alignment: .leading, spacing:8) {
                             HStack {
+                                Text("Size:")
                                 if let smallPrice = content.smallPrice {
                                     Button("Small") {
                                         selectedPrice = smallPrice
@@ -105,25 +158,24 @@ struct ItemView: View {
                                         selectedPrice = specimenPrice
                                     }
                                 }
-                            }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
+                            }.padding(EdgeInsets(top: 20, leading: 0, bottom: 16, trailing: 0))
                             HStack(content: {
                                 Text("\(selectedPrice.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").bold()
-                            }).padding(8)
+                              Spacer()
+                            })
                             HStack(content: {
                                 Text("Quantity")
-                                Spacer()
-                                Button("Add", systemImage: "plus") {
-                                    quantity += 1
-                                }.labelStyle(.iconOnly)
-                                Spacer()
-                                Text("\(quantity)")
-                                Spacer()
                                 Button("Remove", systemImage: "minus") {
                                     if quantity > 0 {
                                         quantity -= 1
                                     }
                                 }.labelStyle(.iconOnly)
-                            }).padding(24)
+                                Text("\(quantity)")
+                                Button("Add", systemImage: "plus") {
+                                    quantity += 1
+                                }.labelStyle(.iconOnly)
+                                Spacer()
+                            })
                             HStack {
                                 Button {
                                     
@@ -131,6 +183,7 @@ struct ItemView: View {
                                     Label("Add to cart", systemImage: "cart.badge.plus")
                                 }
                                 PaymentButton().frame(width: 486/3, height:60)
+                                
                                 
                             }.padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                             ScrollView(.vertical) {
@@ -146,24 +199,6 @@ struct ItemView: View {
                                 }
                         }.frame(width: geo.size.width / 3 - 12).padding(6)
                         VStack{
-                            HStack {
-                                Button {
-                                    switch content.floorPotModelName {
-                                    case "cactus_volume_scene", "cereus_volume_scene", "alocasia_volume_scene":
-                                        openWindow(id:"VolumeLargePlantView")
-                                    default:
-                                        openWindow(id:"VolumeSmallPlantView")
-                                    }
-                                } label: {
-                                    Label("Place in your space", systemImage: "cube")
-                                }
-                                Button {
-                                    openWindow(id: "VideoPlayer")
-                                } label: {
-                                    Label("Plant care instructions", systemImage: "video")
-                                }
-                                .padding(16)
-                            }
                             RealityView { scene in
                                 do {
                                     let entity = try await Entity(named: content.flowerModelName, in:realityKitContentBundle)
@@ -188,22 +223,36 @@ struct ItemView: View {
                                 }
                             }
                             .frame(width: geo.size.width / 3 - 48, height:geo.size.height/2)
-                            .padding(EdgeInsets(top: 24, leading: 24, bottom: 8, trailing: 0))
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 64, trailing: 0))
                             .onChange(of: appState.displayLinkTimestamp) { oldValue, newValue in
                                 if let flowerModelEntity = flowerModelEntity {
                                     flowerModelEntity.transform.rotation = simd_quatf(angle:Float(Angle.degrees(countFrames).radians), axis: simd_float3(0,1,0))
                                     countFrames += 0.25
                                 }
                             }
-                            Spacer()
-                            
-                            
+                            VStack {
+                                Button {
+                                    switch content.floorPotModelName {
+                                    case "cactus_volume_scene", "cereus_volume_scene", "alocasia_volume_scene":
+                                        openWindow(id:"VolumeLargePlantView")
+                                    default:
+                                        openWindow(id:"VolumeSmallPlantView")
+                                    }
+                                } label: {
+                                    Label("Place in your space", systemImage: "cube.fill")
+                                }
+                                Button {
+                                    openWindow(id: "VideoPlayer")
+                                } label: {
+                                    Label("Plant care", systemImage: "video.fill")
+                                }
+                                .padding(16)
+                            }
                         }.frame(width: geo.size.width / 3 - 48).padding(24)
                     })
                 })
             })
             .task {
-                selectedImageName = content.image1URLString
                 if let smallPrice = content.smallPrice {
                     selectedPrice = smallPrice
                 } else if let largePrice = content.largePrice {
@@ -217,6 +266,6 @@ struct ItemView: View {
 }
 
 #Preview {
-    ItemView(appState: TulaAppModel(), content: TulaApp.defaultContent.first!, showVideo: .constant(false))
+    ItemView(appState: TulaAppModel(), content: .constant(TulaApp.defaultContent.first!), showVideo: .constant(false))
 }
 

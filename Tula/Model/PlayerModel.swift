@@ -18,9 +18,16 @@ enum Presentation {
     case fullWindow
 }
 
-@MainActor
-@Observable class PlayerModel {
-    
+@Observable class PlayerModel : NSObject {
+    public var isFullScreen = true {
+        didSet {
+            if isFullScreen {
+                player.play()
+            } else {
+                player.pause()
+            }
+        }
+    }
     /// A Boolean value that indicates whether playback is currently active.
     private(set) var isPlaying = false
     
@@ -48,7 +55,7 @@ enum Presentation {
     /// is an environment-scoped object).
     ///
     /// This value is set by a call to the `makePlayerViewController()` method.
-    private var playerViewController: AVPlayerViewController? = nil
+    public var playerViewController: AVPlayerViewController? = nil
     private var playerViewControllerDelegate: AVPlayerViewControllerDelegate? = nil
     
     private(set) var shouldAutoPlay = true
@@ -60,7 +67,8 @@ enum Presentation {
     private var timeObserver: Any? = nil
     private var subscriptions = Set<AnyCancellable>()
     
-    init() {
+    override init() {
+        super.init()
 //        coordinator = VideoWatchingCoordinator(playbackCoordinator: player.playbackCoordinator)
         observePlayback()
         Task {
@@ -167,7 +175,7 @@ enum Presentation {
     ///   - video: The video to load for playback.
     ///   - presentation: The style in which to present the player.
     ///   - autoplay: A Boolean value that indicates whether to auto play that the content when presented.
-    func loadVideo(_ video: URL, presentation: Presentation = .inline, autoplay: Bool = true) async throws {
+    func loadVideo(_ video: URL, presentation: Presentation = .fullWindow, autoplay: Bool = true) async throws {
         // Update the model state for the request.
         currentItem = video
         shouldAutoPlay = autoplay
@@ -200,14 +208,16 @@ enum Presentation {
         }
    }
     
-    @MainActor
     private func replaceCurrentItem(with video: URL) async throws {
         // Create a new player item and set it as the player's current item.
         let playerItem = AVPlayerItem(url: video)
         // Set external metadata on the player item for the current video.
-        playerItem.externalMetadata = try await createMetadataItems(for: playerItem.asset)
+        let metadata = try await createMetadataItems(for: playerItem.asset)
+        playerItem.externalMetadata = metadata
         // Set the new player item as current, and begin loading its data.
-        player.replaceCurrentItem(with: playerItem)
+        await MainActor.run {
+            player.replaceCurrentItem(with: playerItem)
+        }
         print("🍿 \(video.absoluteString) enqueued for playback.")
     }
     
@@ -220,19 +230,15 @@ enum Presentation {
     func reset() {
         currentItem = nil
         player.replaceCurrentItem(with: nil)
-        playerViewController = nil
         playerViewControllerDelegate = nil
-        // Reset the presentation state on the next cycle of the run loop.
-        Task { @MainActor in
-            presentation = .inline
-        }
+        playerViewController = nil
+        isFullScreen = false
     }
     
     /// Creates metadata items from the video items data.
     /// - Parameter video: the video to create metadata for.
     /// - Returns: An array of `AVMetadataItem` to set on a player item.
     
-
     private func createMetadataItems(for video: AVAsset) async throws -> [AVMetadataItem] {
         return try await video.load(.metadata)
     }
@@ -291,7 +297,7 @@ enum Presentation {
     private func addTimeObserver() {
         removeTimeObserver()
         // Observe the player's timing every 1 second
-        let timeInterval = CMTime(value: 1, timescale: 1)
+        let _ = CMTime(value: 1, timescale: 1)
 //        timeObserver = player.addPeriodicTimeObserver(forInterval: timeInterval, queue: .main) { [weak self] time in
 //        }
     }
@@ -317,10 +323,13 @@ enum Presentation {
         func playerViewController(_ playerViewController: AVPlayerViewController,
                                   willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
             Task { @MainActor in
-                // Calling reset dismisses the full-window player.
-                player.reset()
+                player.isFullScreen = false
             }
         }
         #endif
+        
     }
+}
+
+extension PlayerModel : AVPlayerViewControllerDelegate {
 }

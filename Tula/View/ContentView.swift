@@ -13,7 +13,8 @@ import PassKit
 public struct ContentView: View {
     public let appState: TulaAppModel
     public let modelLoader: ModelLoader
-    public let modelContent:[ModelViewContent]
+    @Binding public var shopifyModel:ShopifyModel
+    @Binding public var modelContent:[ModelViewContent]
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
     @State private var showARSpace = false
@@ -24,17 +25,18 @@ public struct ContentView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.scenePhase) private var scenePhase
     
-    public init(appState: TulaAppModel, modelLoader: ModelLoader, modelContent:[ModelViewContent], selectedModel:Binding<ModelViewContent?>, placementModel:Binding<ModelViewContent?>) {
+    public init(appState: TulaAppModel, modelLoader: ModelLoader, shopifyModel:Binding<ShopifyModel>, modelContent:Binding<[ModelViewContent]>, selectedModel:Binding<ModelViewContent?>, placementModel:Binding<ModelViewContent?>) {
         
         self.appState = appState
         self.modelLoader = modelLoader
-        self.modelContent = modelContent
+        _shopifyModel = shopifyModel
+        _modelContent = modelContent
         _selectedModel = selectedModel
-        _placementModel = placementModel
+        _placementModel = placementModel    
     }
     
     public var body: some View {
 
-        DetailView(appState: appState, modelContent:modelContent, content: $selectedModel, placementModel: $placementModel)
+        DetailView(appState: appState, shopifyModel: $shopifyModel, modelContent:$modelContent, content: $selectedModel, placementModel: $placementModel)
     }
 }
