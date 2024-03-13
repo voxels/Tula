@@ -330,6 +330,3 @@ enum Presentation {
         
     }
 }
-
-extension PlayerModel : AVPlayerViewControllerDelegate {
-}

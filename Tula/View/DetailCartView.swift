@@ -13,19 +13,6 @@ struct DetailCartView: View {
     
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .onChange(of: shopifyModel.productResponses) { oldValue, newValue in
-                for response in newValue {
-                    print(response.title)
-                    print(response.description)
-                }
-            }
-            .task {
-                for response in shopifyModel.productResponses {
-                    print(response.title)
-                    print(response.description)
-                }
-                print(shopifyModel.productResponses.count)
-            }
     }
 }
 

@@ -7,20 +7,26 @@
 
 import SwiftUI
 
-public struct ModelViewContent: Identifiable, Equatable {
+public typealias ModelViewContentVariantData = (id:String, title:String, amount:Decimal, currencyCode:String, availableForSale:Bool, quantityAvailable:Int)
+
+public struct ModelViewContent: Identifiable, Equatable, Hashable {
+    public static func == (lhs: ModelViewContent, rhs: ModelViewContent) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     public let id = UUID()
-    public var title:String
-    public var flowerModelName:String
-    public var floorPotModelName:String
-    public var backgroundColor:Color
-    public var image1URLString:String
-    public var image2URLString:String
-    public var image3URLString:String
-    public var image4URLString:String?
-    public var videoURLString:String
-    public var smallPrice:Float?
-    public var largePrice:Float?
-    public var specimenPrice:Float?
-    public var description:String
     let attachmentID:String = UUID().uuidString
+    public var title:String
+    public var description:String
+    public var featuredImage:String?
+    public var usdzModelName:String
+    public var usdzFullSizeModelName:String
+    public var imagesData:[String]
+    public var variantPrices:[ModelViewContentVariantData]
+    public var videoURLString:String?
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(title)
+    }
 }

@@ -19,7 +19,7 @@ open class CloudCache : NSObject, ObservableObject {
     @Published var isFetchingCachedRecords:Bool = false
     @Published public var queuedGroups = Set<String>()
     let keysContainer = CKContainer(identifier:"iCloud.com.noisederived.Tula.Cache")
-    static let shopifyWebAddressString = "quickstart-e117ce3e.myshopify.com"
+    static let shopifyWebAddressString = "tula.house"
     private var serviceAPIKey:String = ""
     
     public enum CloudCacheService : String {

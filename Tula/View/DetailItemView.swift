@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct DetailItemView: View {
-    let appState: TulaAppModel
+    @Binding public var appState: TulaAppModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
-    @State private var currentIndex = 0
+    @Binding public var currentIndex:Int
     @State private var showVideo = false
     var body: some View {
         GeometryReader(content: { geo in
             VStack{
                 Spacer()
-                
                 ScrollViewReader(content: { scrollViewProxy in
                     ScrollView(.horizontal) {
                         LazyHStack(spacing: 0, content: {
                             let countObjects = modelContent.count
                             ForEach(0..<countObjects, id: \.self) { index in
-                                ItemView(appState: appState, content: $modelContent[index], showVideo: $showVideo)
+                                ItemView(appState: $appState, content: $modelContent[index], showVideo: $showVideo)
                                     .frame(width: geo.size.width, height:geo.size.height - 48)
                                     .id(index)
                                     .padding(0)
@@ -39,13 +38,26 @@ struct DetailItemView: View {
                                     content = modelContent[currentIndex]
                                 }
                             }
-                            .onAppear {
-                                if let content = content {
-                                    currentIndex = modelContent.firstIndex(of: content) ?? 0
+                            .onChange(of: content) { oldValue, newValue in
+                                withAnimation {
+                                    if let content = content {
+                                        let newIndex = modelContent.firstIndex(of: content) ?? 0
+                                        guard newIndex < modelContent.count else {
+                                            return
+                                        }
+                                        if currentIndex != newIndex {
+                                            scrollViewProxy.scrollTo(currentIndex, anchor: .center)
+                                            self.content = modelContent[currentIndex]
+                                        }
+                                    }
                                 }
-                                
+                            }.onAppear {
                                 scrollViewProxy.scrollTo(currentIndex, anchor: .center)
-                                content = modelContent[currentIndex]
+                                guard currentIndex < modelContent.count else {
+                                    content = modelContent[modelContent.count - 1]
+                                    return
+                                }
+                                self.content = modelContent[currentIndex]
                             }
                         
                     }
@@ -60,7 +72,7 @@ struct DetailItemView: View {
 //                    VStack{
 //                        HStack {
 //                            Button {
-//                                
+//
 //                                showVideo.toggle()
 //                            } label: {
 //                                Label("previous", systemImage: "chevron.left")
@@ -74,7 +86,7 @@ struct DetailItemView: View {
 
                 } else {
                     VStack{
-                        HStack {                            
+                        HStack {
                             if currentIndex > 0{
                                 Button {
                                     scroll(to: currentIndex - 1)
@@ -109,7 +121,7 @@ struct DetailItemView: View {
 }
 
 #Preview {
-    DetailItemView(appState: TulaAppModel(), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!))
+    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), currentIndex: .constant(0))
 }
 
 extension Comparable {

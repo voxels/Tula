@@ -11,9 +11,9 @@ import RealityKitContent
 
 @MainActor
 struct ImmersiveView: View {
-    var appState: TulaAppModel
-    let modelLoader: ModelLoader
-    let placementManager:ARSessionManager
+    @Binding public var appState: TulaAppModel
+    @Binding public var modelLoader: ModelLoader
+    @Binding public var placementManager:ARSessionManager
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
     @State private var collisionBeganSubscription: EventSubscription? = nil
@@ -93,7 +93,7 @@ struct ImmersiveView: View {
         }
         .onChange(of: selectedModel) { oldValue, newValue in
             if let selectedModel = newValue {
-                appState.placementManager?.select(appState.placeableObjectsByFileName[selectedModel.flowerModelName])
+                appState.placementManager?.select(appState.placeableObjectsByFileName[selectedModel.usdzModelName])
             } else {
                 appState.placementManager?.select(nil)
             }

@@ -45,8 +45,8 @@ final public class ModelLoader {
         fileCount = content.count
         await withTaskGroup(of: Void.self) { group in
             for usdz in content {
-                let flowerFileName = usdz.flowerModelName
-                let floorPotModelName = usdz.floorPotModelName
+                let flowerFileName = usdz.usdzModelName
+                let floorPotModelName = usdz.usdzFullSizeModelName
                 group.addTask {
                     await self.loadObject(flowerFileName, displayName: usdz.title)
                     await self.loadObject(floorPotModelName, displayName: usdz.title)

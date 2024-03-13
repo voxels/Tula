@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct DetailView: View {
-    let appState: TulaAppModel
+    @Binding public var appState: TulaAppModel
+    @Binding public var modelLoader: ModelLoader
     @Binding public var shopifyModel:ShopifyModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
@@ -16,80 +17,69 @@ struct DetailView: View {
     @Binding public var placementModel:ModelViewContent?
     @State private var showImmersiveTab = false
     @State private var selectedTab = 0
+    @State private var currentIndex = 0
     var body: some View {
+        if shopifyModel.collectionResponses.count > 0 {
+            let count:Int = shopifyModel.collectionResponses.count
             TabView(selection: $selectedTab,
                     content:  {
-                VStack(alignment: .center, spacing:0) {
-                    Image("Tula-House-Logo-White@4x")
-                        .resizable()
-                        .frame(width: 96, height: 60, alignment: .center)
-                        .padding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
-                    ScrollView(.horizontal) {
-                        LazyHStack{
-                            ForEach(modelContent) { content in
-                                VStack(spacing:0) {
-                                    Image(content.image1URLString).resizable().aspectRatio(contentMode: .fill)
-                                        .frame(height:460)
-                                    ZStack(alignment: .center){
-                                        Rectangle().foregroundStyle(.thinMaterial)
-                                        VStack(alignment: .leading, spacing: 0){
-                                            Text(content.title)
-                                                .multilineTextAlignment(.leading)
-                                                .font(.headline)
-                                                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                                            if let price = content.smallPrice {
-                                                Text("from \(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))")
-                                                    .multilineTextAlignment(.leading)
-                                                    .font(.subheadline)
-                                                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-
-                                            }
-                                        }
-                                    }.frame(height:116)
-                                }
-                                .clipShape(
-                                    .rect(
-                                        topLeadingRadius: 32,
-                                        bottomLeadingRadius: 32,
-                                        bottomTrailingRadius: 32,
-                                        topTrailingRadius: 32
-                                    )
-                                ).onTapGesture {
-                                    self.content = content
-                                    selectedTab = 1
-                                }
-                                .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                                .hoverEffect(.automatic)
-                            }
-                        }
-                        
+                    ForEach(0..<count, id:\.self) { index in
+                        let collectionResponse = shopifyModel.collectionResponses[index]
+                        let collectionTitle = collectionResponse.collection.title
+                        GalleryView(collectionID: collectionResponse.id, appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+                            .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+                            .tabItem { Label(collectionTitle == "Products" ? "Toys" : collectionTitle, systemImage: systemImageName(for: collectionResponse))}
+                            .tag(index)
                     }
-                    .scrollIndicators(.hidden)
-                    .padding(EdgeInsets(top: 0, leading: 16, bottom:0, trailing: 0))
-                }
-                .frame(minWidth:1280,maxWidth:1280)
-                .tabItem { Label("Gallery", systemImage: "tree")}
-                .tag(0)
-                DetailItemView(appState: appState, modelContent: $modelContent, content: $content)
-                    .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-                    .tabItem { Label("Plants", systemImage: "leaf")}
-                    .tag(1)
-                DetailCartView(shopifyModel: $shopifyModel)
-                    .tabItem { Label("Cart", systemImage: "cart") }
-                    .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-                    .tag(2)
-                if showImmersiveTab {
-                    ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Immersive", systemImage: "visionpro")  }.tag(3)
-                }
+                    if showImmersiveTab {
+                        ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)
+                    }
             })
             .glassBackgroundEffect()
-            .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
+            .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
             .onChange(of: selectedTab) { oldValue, newValue in
-                content = nil
+                let collectionResponses = shopifyModel.collectionResponses
+                if newValue < collectionResponses.count {
+                    let collection = collectionResponses[newValue]
+                    modelContent = shopifyModel.modelViewContent(for: collection.collection.id.rawValue)
+                }
             }
+            
+        } else {
+            TabView(selection: $selectedTab,
+                    content:  {
+                    let count = 1
+                    ForEach(0..<count, id:\.self) { index in
+                        let collectionTitle = "Gallery"
+                        GalleryView(collectionID: UUID(), appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+                            .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+                            .tabItem { Label(collectionTitle, systemImage:"tree")}
+                            .tag(index)
+                    }
+                    if showImmersiveTab {
+                        ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)
+                    }
+            })
+            .glassBackgroundEffect()
+            .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+            .onChange(of: selectedTab) { oldValue, newValue in
+                let collectionResponses = shopifyModel.collectionResponses
+                if newValue < collectionResponses.count {
+                    let collection = collectionResponses[newValue]
+                    modelContent = shopifyModel.modelViewContent(for: collection.collection.id.rawValue)
+                }
+            }
+        }
+    }
+    
+    func systemImageName(for collection:ShopifyCollectionResponse)->String {
+        switch collection.collection.id.rawValue {
+        default:
+            return "plant"
+        }
     }
 }
 
 #Preview {
-    DetailView(appState: TulaAppModel(), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( nil), placementModel: .constant(nil))
+    DetailView(appState: .constant( TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( nil), placementModel: .constant(nil))
 }
