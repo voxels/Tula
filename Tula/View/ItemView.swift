@@ -14,6 +14,7 @@ import RealityKitContent
 struct ItemView: View {
     @Binding public var appState: TulaAppModel
     @Binding public var content:ModelViewContent
+    @Binding public var playerModel:PlayerModel
     @Binding public var showVideo:Bool
     @State private var selectedPrice:Float = 0
     @State private var quantity:Int = 0
@@ -32,46 +33,97 @@ struct ItemView: View {
                         ScrollViewReader(content: { scrollViewProxy in
                             ScrollView(.horizontal){
                                 HStack(alignment:.center,spacing:0) {
-                                ForEach(0..<content.imagesData.count, id:\.self) { index in
-                                    let imageData = content.imagesData[index]
-                                    Image(imageData)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .cornerRadius(16)
-                                        .frame(maxWidth: geo.size.width / 3 - (24 * 2))
-                                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                            .clipShape(
-                                                .rect(
-                                                    topLeadingRadius: 16,
-                                                    bottomLeadingRadius: 16,
-                                                    bottomTrailingRadius: 16,
-                                                    topTrailingRadius: 16
+                                    if !content.imagesData.isEmpty {
+                                        ForEach(0..<content.imagesData.count, id:\.self) { index in
+                                            let imageData = content.imagesData[index]
+                                            AsyncImage(url:imageData.url){ image in
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .cornerRadius(16)
+                                                    .frame(maxWidth: geo.size.width / 3 - (24 * 2))
+                                            } placeholder: {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .frame(maxWidth: geo.size.width / 3 - (24 * 2))
+                                                    .foregroundStyle(.thinMaterial)
+                                            }.contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                                .clipShape(
+                                                    .rect(
+                                                        topLeadingRadius: 16,
+                                                        bottomLeadingRadius: 16,
+                                                        bottomTrailingRadius: 16,
+                                                        topTrailingRadius: 16
+                                                    )
                                                 )
-                                            )
-                                        .id(index)
+                                                .id(index)
+                                        }
+                                    } else {
+                                        ForEach(0..<content.localImages.count, id:\.self) { index in
+                                            let imageData = content.localImages[index]
+                                            Image(imageData)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .cornerRadius(16)
+                                                .frame(maxWidth: geo.size.width / 3 - (24 * 2)).contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                                .clipShape(
+                                                    .rect(
+                                                        topLeadingRadius: 16,
+                                                        bottomLeadingRadius: 16,
+                                                        bottomTrailingRadius: 16,
+                                                        topTrailingRadius: 16
+                                                    )
+                                                )
+                                                .id(index)
+                                            
+                                        }
                                     }
                                 }
                             }.scrollTargetBehavior(.paging)
                             HStack {
-                            ForEach(0..<min(content.imagesData.count, 4), id:\.self) { index in
-                                let imageData = content.imagesData[index]
-                                Image(imageData)                                            .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame( maxWidth:(geo.size.width / 3 - 48) / 4)
-                                    .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                    .hoverEffect()
-                                    .cornerRadius(16)
-                                    .onTapGesture {
-                                        scrollViewProxy.scrollTo(index, anchor: .center)
+                                if !content.imagesData.isEmpty {
+                                    ForEach(0..<min(content.imagesData.count, 4), id:\.self) { index in
+                                        let imageData = content.imagesData[index]
+                                        AsyncImage(url:imageData.url){ image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame( maxWidth:(geo.size.width / 3 - 48) / 4)
+                                                .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                                .hoverEffect()
+                                                .cornerRadius(16)
+                                        } placeholder: {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .frame( maxWidth:(geo.size.width / 3 - 48) / 4)
+                                                .foregroundStyle(.thinMaterial)
+                                        }
+                                        .onTapGesture {
+                                            scrollViewProxy.scrollTo(index, anchor: .center)
+                                        }
                                     }
+                                    .frame(maxHeight:100)
+                                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                                } else {
+                                    ForEach(0..<min(content.localImages.count, 4), id:\.self) { index in
+                                        let imageData = content.localImages[index]
+                                        Image(imageData)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                            .hoverEffect()
+                                            .cornerRadius(16)
+                                        .onTapGesture {
+                                            scrollViewProxy.scrollTo(index, anchor: .center)
+                                        }
+                                    }
+                                    .frame(maxHeight:100)
+                                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+
                                 }
-                                .frame(maxHeight:100)
-                                .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                             }
                         })
                     }
-                        .frame(width: geo.size.width / 3 - 48)
-                        .padding(24)
+                    .frame(width: geo.size.width / 3 - 48)
+                    .padding(24)
                     VStack(alignment: .leading, spacing:8){
                         HStack(alignment:.center, content: {
                             Text("Price: ")
@@ -124,7 +176,8 @@ struct ItemView: View {
                             RealityView { scene in
                                 do {
                                     let entity = try await Entity(named: content.usdzModelName, in:realityKitContentBundle)
-                                    entity.position = SIMD3(0, -0.125, 0.15)
+                                    entity.position = SIMD3(0, -0.125, 0.20)
+                                    entity.setScale(SIMD3(0.5,0.5,0.5), relativeTo: nil)
                                     scene.add(entity)
                                     
                                     guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
@@ -156,6 +209,11 @@ struct ItemView: View {
                             } label: {
                                 Label("Place in your space", systemImage: "cube")
                             }
+                            Button {
+                                showVideo.toggle()
+                            } label: {
+                                Label("Plant care", systemImage: "video.fill")
+                            }
                         }
                     }.frame(width: geo.size.width / 3 - 48).padding(24)
                 })
@@ -170,5 +228,5 @@ struct ItemView: View {
 }
 
 #Preview {
-    ItemView(appState: .constant(TulaAppModel()), content: .constant(TulaApp.defaultContent.first!), showVideo: .constant(false))
+    ItemView(appState: .constant(TulaAppModel()), content: .constant(TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), showVideo: .constant(false))
 }

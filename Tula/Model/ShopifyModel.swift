@@ -61,12 +61,16 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
         }) else {
             return newContent
         }
-        
+                
         for productResponse in response.productResponses {
-            var imagesData = [String]()
+            if !productResponse.product.availableForSale {
+                continue
+            }
+            
+            var imagesData = [ModelViewContentImageData]()
             var variantsData = [ModelViewContentVariantData]()
             for image in productResponse.images {
-                let newImageData = image.url.absoluteString
+                let newImageData = (image.url, Int(image.width ?? 0), Int(image.height ?? 0), image.altText ?? "")
                 imagesData.append(newImageData)
             }
             
@@ -75,14 +79,15 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
                 variantsData.append(newVariantData)
             }
             
-            var featuredImageData:String?
+            var featuredImageData:ModelViewContentImageData?
             if let featuredImage = productResponse.featuredImage {
-                featuredImageData = featuredImage.url.absoluteString
+                featuredImageData = (featuredImage.url, Int(featuredImage.width ?? 0), Int(featuredImage.height ?? 0), featuredImage.altText ?? "" )
             }
             
-            let modelContent = ModelViewContent(title: productResponse.title, description: productResponse.description, featuredImage:featuredImageData, usdzModelName: usdzModelName(for: productResponse.product.id.rawValue), usdzFullSizeModelName: usdzModelName(for: productResponse.product.id.rawValue), imagesData: imagesData, variantPrices: variantsData)
+            let modelContent = ModelViewContent(productId: productResponse.product.id.rawValue, title: productResponse.title, description: productResponse.description, featuredImage:featuredImageData, usdzModelName: usdzModelName(for: productResponse.product.id.rawValue), usdzFullSizeModelName: usdzModelName(for: productResponse.product.id.rawValue), imagesData: imagesData, localImages: [], variantPrices: variantsData)
             print(productResponse.product.id.rawValue)
             print(productResponse.title)
+            
             newContent.append(modelContent)
         }
         
@@ -91,6 +96,16 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
     
     private func usdzModelName(for productID:String)->String {
         switch productID {
+        case "gid://shopify/Product/4422296764474":
+            return "Cereus-forbesii-spiralis-Full"
+        case "gid://shopify/Product/7032845107258":
+            return "Euphorbia-abdelkuri-Silver-Full"
+        case "Monstera-pinnatipartita-siam_Full":
+            return "Monstera-pinnatipartita-siam_Full"
+        case "gid://shopify/Product/4422402572346":
+            return "Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full"
+        case "Philodendron-gloriosum_Full":
+            return "Philodendron-gloriosum_Full"
         default:
             return ""
         }

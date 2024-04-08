@@ -15,6 +15,7 @@ public struct ContentView: View {
     @Binding public var modelLoader: ModelLoader
     @Binding public var shopifyModel:ShopifyModel
     @Binding public var modelContent:[ModelViewContent]
+    @Binding public var playerModel:PlayerModel
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
     @State private var showARSpace = false
@@ -26,6 +27,6 @@ public struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     
     public var body: some View {
-        DetailView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$selectedModel, placementModel: $placementModel)
+        DetailView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$selectedModel, playerModel: $playerModel, placementModel: $placementModel)
     }
 }

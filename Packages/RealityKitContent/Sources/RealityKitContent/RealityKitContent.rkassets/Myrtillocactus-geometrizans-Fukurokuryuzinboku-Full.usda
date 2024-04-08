@@ -1,0 +1,22 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 1.0 (409.100.15)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Myrtillocactus_geometrizans_Fukurokuryuzinboku_Full" (
+        active = true
+        prepend references = @Stock/Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full.usdz@</object>
+    )
+    {
+        float3 xformOp:translate = (-0.049596727, -0.6530297, 0.057325482)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+

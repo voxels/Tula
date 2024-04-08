@@ -15,7 +15,7 @@ struct OnboardingView: View {
         Button {
             showOnboarding = false
         } label: {
-            Label("Welcome", systemImage: "plant")
+            Label("Welcome", systemImage: "leaf")
                 .labelStyle(.titleOnly)
         }.disabled(!isReady)
             .task {

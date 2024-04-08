@@ -13,6 +13,7 @@ struct GalleryView: View {
     @Binding public var shopifyModel:ShopifyModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
+    @Binding public var playerModel:PlayerModel
     @Binding public var placementModel:ModelViewContent?
     @Binding public var showImmersiveTab:Bool
     @Binding public var selectedTab:Int
@@ -20,7 +21,7 @@ struct GalleryView: View {
     @State private var showItemView:Bool = false
     var body: some View {
         if showItemView {
-            DetailItemView(appState: $appState, modelContent: $modelContent, content: $content, currentIndex:$currentIndex)
+            DetailItemView(appState: $appState, modelContent: $modelContent, content: $content, playerModel: $playerModel, currentIndex:$currentIndex)
                 .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
                 .onDisappear(perform: {
                     showItemView = false
@@ -31,13 +32,27 @@ struct GalleryView: View {
                     ForEach(modelContent) { thisContent in
                         VStack(spacing:0) {
                             if let featuredImage = thisContent.featuredImage {
-                                Image(featuredImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height:460)
+                                AsyncImage(url:featuredImage.url){ image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height:460)
+                                } placeholder: {
+                                    ProgressView()
+                                        .frame(width:460, height:460)
+                                }
                             } else if let firstImage = thisContent.imagesData.first {
-                                Image(firstImage)
-                                    .resizable()
+                                AsyncImage(url:firstImage.url){ image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height:460)
+                                } placeholder: {
+                                    ProgressView()                                        .frame(width:460, height:460)
+
+                                }
+                            } else if let firstImageName = thisContent.localImages.first {
+                                Image(firstImageName)                                        .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(height:460)
                             } else {
@@ -77,5 +92,5 @@ struct GalleryView: View {
 }
 
 #Preview {
-    GalleryView(collectionID: UUID(), appState:.constant(TulaAppModel()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content: .constant(TulaApp.defaultContent.first!), placementModel: .constant(TulaApp.defaultContent.first!), showImmersiveTab: .constant(false), selectedTab: .constant(0), currentIndex: .constant(0))
+    GalleryView(collectionID: UUID(), appState:.constant(TulaAppModel()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content: .constant(TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), placementModel: .constant(TulaApp.defaultContent.first!), showImmersiveTab: .constant(false), selectedTab: .constant(0), currentIndex: .constant(0))
 }

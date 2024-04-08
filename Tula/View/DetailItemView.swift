@@ -11,6 +11,7 @@ struct DetailItemView: View {
     @Binding public var appState: TulaAppModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
+    @Binding public var playerModel:PlayerModel
     @Binding public var currentIndex:Int
     @State private var showVideo = false
     var body: some View {
@@ -22,20 +23,29 @@ struct DetailItemView: View {
                         LazyHStack(spacing: 0, content: {
                             let countObjects = modelContent.count
                             ForEach(0..<countObjects, id: \.self) { index in
-                                ItemView(appState: $appState, content: $modelContent[index], showVideo: $showVideo)
+                                ItemView(appState: $appState, content: $modelContent[index], playerModel: $playerModel, showVideo: $showVideo)
                                     .frame(width: geo.size.width, height:geo.size.height - 48)
                                     .id(index)
                                     .padding(0)
                             }
                         }).scrollTargetLayout()
                             .onChange(of: currentIndex) { oldValue, newValue in
-                                withAnimation {
+                                if abs(newValue - oldValue) > 1 {
                                     scrollViewProxy.scrollTo(newValue, anchor: .center)
                                     guard currentIndex < modelContent.count else {
                                         content = modelContent[modelContent.count - 1]
                                         return
                                     }
                                     content = modelContent[currentIndex]
+                                } else {
+                                    withAnimation {
+                                        scrollViewProxy.scrollTo(newValue, anchor: .center)
+                                        guard currentIndex < modelContent.count else {
+                                            content = modelContent[modelContent.count - 1]
+                                            return
+                                        }
+                                        content = modelContent[currentIndex]
+                                    }
                                 }
                             }
                             .onChange(of: content) { oldValue, newValue in
@@ -51,7 +61,14 @@ struct DetailItemView: View {
                                         }
                                     }
                                 }
-                            }.onAppear {
+                            }.onChange(of:showVideo) { oldValue, newValue in
+                                if newValue {
+                                    Task { @MainActor in
+playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inline)
+                                    }
+                                }
+                            }
+                            .onAppear {
                                 scrollViewProxy.scrollTo(currentIndex, anchor: .center)
                                 guard currentIndex < modelContent.count else {
                                     content = modelContent[modelContent.count - 1]
@@ -67,29 +84,19 @@ struct DetailItemView: View {
                 })
             }
             .overlay {
-                if showVideo {
-                    EmptyView()
-//                    VStack{
-//                        HStack {
-//                            Button {
-//
-//                                showVideo.toggle()
-//                            } label: {
-//                                Label("previous", systemImage: "chevron.left")
-//                            }
-//                            .labelStyle(.iconOnly)
-//                            .padding(24)
-//                            Spacer()
-//                        }
-//                        Spacer()
-//                    }
-
-                } else {
                     VStack{
                         HStack {
                             if currentIndex > 0{
                                 Button {
                                     scroll(to: currentIndex - 1)
+                                } label: {
+                                    Label("previous", systemImage: "chevron.left")
+                                }
+                                .labelStyle(.iconOnly)
+                                .padding(24)
+                            } else {
+                                Button {
+                                    scroll(to: modelContent.count - 1)
                                 } label: {
                                     Label("previous", systemImage: "chevron.left")
                                 }
@@ -106,13 +113,24 @@ struct DetailItemView: View {
                                 }
                                 .labelStyle(.iconOnly)
                                 .padding(24)
+                            } else {
+                                Button {
+                                    scroll(to: 0)
+                                } label: {
+                                    Label("next", systemImage: "chevron.right")
+                                }
+                                .labelStyle(.iconOnly)
+                                .padding(24)
                             }
                         }
                         Spacer()
                     }
                 }
-            }
         })
+        .popover(isPresented: $showVideo) {
+            PlayerViewController(model: $playerModel)
+                .interactiveDismissDisabled(!playerModel.isPlaybackComplete)
+        }
     }
     
     private func scroll(to index: Int) {
@@ -121,7 +139,7 @@ struct DetailItemView: View {
 }
 
 #Preview {
-    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), currentIndex: .constant(0))
+    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0))
 }
 
 extension Comparable {

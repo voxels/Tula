@@ -13,7 +13,7 @@ struct DetailView: View {
     @Binding public var shopifyModel:ShopifyModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
-    
+    @Binding public var playerModel:PlayerModel
     @Binding public var placementModel:ModelViewContent?
     @State private var showImmersiveTab = false
     @State private var selectedTab = 0
@@ -26,7 +26,7 @@ struct DetailView: View {
                     ForEach(0..<count, id:\.self) { index in
                         let collectionResponse = shopifyModel.collectionResponses[index]
                         let collectionTitle = collectionResponse.collection.title
-                        GalleryView(collectionID: collectionResponse.id, appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+                        GalleryView(collectionID: collectionResponse.id, appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, playerModel: $playerModel, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
                             .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
                             .tabItem { Label(collectionTitle == "Products" ? "Toys" : collectionTitle, systemImage: systemImageName(for: collectionResponse))}
                             .tag(index)
@@ -51,7 +51,7 @@ struct DetailView: View {
                     let count = 1
                     ForEach(0..<count, id:\.self) { index in
                         let collectionTitle = "Gallery"
-                        GalleryView(collectionID: UUID(), appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+                        GalleryView(collectionID: UUID(), appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, playerModel: $playerModel, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
                             .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
                             .tabItem { Label(collectionTitle, systemImage:"tree")}
                             .tag(index)
@@ -75,11 +75,11 @@ struct DetailView: View {
     func systemImageName(for collection:ShopifyCollectionResponse)->String {
         switch collection.collection.id.rawValue {
         default:
-            return "plant"
+            return "leaf"
         }
     }
 }
 
 #Preview {
-    DetailView(appState: .constant( TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( nil), placementModel: .constant(nil))
+    DetailView(appState: .constant( TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( nil), playerModel: .constant(PlayerModel()), placementModel: .constant(nil))
 }

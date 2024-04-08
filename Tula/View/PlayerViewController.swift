@@ -16,19 +16,12 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         let controller = model.makePlayerViewController()
         controller.videoGravity = .resizeAspect
+        controller.modalPresentationStyle = .automatic
         return controller
     }
     
     func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
         
-    }
-    
-    static func dismantleUIViewController(
-        _ uiViewController: Self.UIViewControllerType,
-        coordinator: Self.Coordinator
-    ){
-        uiViewController.player?.replaceCurrentItem(with: nil)
-        print("Dismantled")
     }
 }
 

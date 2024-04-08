@@ -25,7 +25,7 @@ struct VolumeView: View {
             RealityView { scene, attachments in
                 resetState(for: scene, attachments: attachments)
             } update: {  scene, attachments in
-                if flowerEntity.name != model.usdzFullSizeModelName {
+                if flowerEntity.name != model.usdzModelName {
                     resetState(for: scene, attachments: attachments)
                 }
             } attachments: {
@@ -35,9 +35,15 @@ struct VolumeView: View {
                         VStack(alignment: .center, content: {
                             HStack {
                                 if let featuredImage = model.featuredImage {
-                                    Image(featuredImage)
+                                    AsyncImage(url:featuredImage.url)
                                         .frame(width:108, height:136)
-                                        .cornerRadius(30)
+                                        .cornerRadius(15)
+
+                                } else if let featuredImage = model.localImages.first {
+                                    Image(featuredImage)
+                                        .resizable()
+                                        .frame(width:108, height:136)
+                                        .cornerRadius(15)
                                 }
                                 VStack {
                                     Text(model.title).bold().padding(4)
@@ -67,14 +73,22 @@ struct VolumeView: View {
                 }
                 
             }
+            .onChange(of: toyTransform) { oldValue, newValue in
+                let newRotation = toyTransform.rotation
+                let newTransform = Transform(scale: flowerEntity.transform.scale, rotation:newRotation, translation:flowerEntity.transform.translation)
+                flowerEntity.transform = newTransform
+            }
             .gesture(
                 DragGesture()
                     .targetedToEntity(flowerEntity)
                     .onChanged({ value in
                     let width = value.translation.width
+                    let height = value.translation.height
                     print(width)
-                    let angle = Angle(degrees: width)
-                    let rotation = simd_quatf(angle: Float(angle.radians), axis: SIMD3(0,1,0))
+                    let xAngle = Angle(degrees: width)
+                    let yAngle = Angle(degrees: height)
+                    let xRotation = simd_quatf(angle: Float(xAngle.radians), axis: SIMD3(0,1,0))
+                    let rotation = xRotation
                     let transform = Transform(scale:SIMD3(1,1,1), rotation:rotation, translation:SIMD3.zero)
                     toyTransform = transform
                 })
@@ -116,16 +130,15 @@ struct VolumeView: View {
             do {
                 flowerEntity.removeFromParent()
 
-                flowerEntity = try await Entity(named: model.usdzFullSizeModelName, in:realityKitContentBundle)
+                flowerEntity = try await Entity(named: model.usdzModelName, in:realityKitContentBundle)
             
-                flowerEntity.name = model.usdzFullSizeModelName
+                flowerEntity.name = model.usdzModelName
                                 
                 flowerEntity.generateCollisionShapes(recursive: true)
                 flowerEntity.components.set(InputTargetComponent())
+                flowerEntity.setPosition(SIMD3(0,-0.15,0), relativeTo:nil)
+                flowerEntity.setScale(SIMD3(1,1,1), relativeTo: nil)
                 
-
-
-
                 guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
                 else { return }
                 
@@ -135,6 +148,12 @@ struct VolumeView: View {
                 flowerEntity.components[ImageBasedLightComponent.self] = iblComponent
                 flowerEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: flowerEntity))
                 scene.add(flowerEntity)
+                
+                if let label = attachments.entity(for: "label") {
+                    label.setPosition(SIMD3(0,-0.4,0.3), relativeTo: nil)
+                    scene.add(label)
+                }
+
             } catch {
                 print(error)
             }

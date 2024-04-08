@@ -177,16 +177,16 @@
 			isa = PBXGroup;
 			children = (
 				1EB50B792B9CB8E700FA55F2 /* OnboardingView.swift */,
+				1ED4EF7B2B87B79000CC61FD /* PlayerViewController.swift */,
 				1E46875E2B63E51600F18FB9 /* ContentView.swift */,
 				1EB1D5712B7E729D004250DA /* DetailView.swift */,
+				1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */,
 				1E1896E22BA1DA1100DD8866 /* GalleryView.swift */,
 				1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */,
 				1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */,
 				1E188A412B7FC6C400BAFC8C /* ItemView.swift */,
-				1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */,
 				1E4687602B63E51600F18FB9 /* ImmersiveView.swift */,
 				1E188A432B82644D00BAFC8C /* VolumeView.swift */,
-				1ED4EF7B2B87B79000CC61FD /* PlayerViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
