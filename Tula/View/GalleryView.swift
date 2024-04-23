@@ -21,7 +21,7 @@ struct GalleryView: View {
     @State private var showItemView:Bool = false
     var body: some View {
         if showItemView {
-            DetailItemView(appState: $appState, modelContent: $modelContent, content: $content, playerModel: $playerModel, currentIndex:$currentIndex)
+            DetailItemView(appState: $appState, modelContent: $modelContent, content: $content, playerModel: $playerModel, currentIndex:$currentIndex, showItemView: $showItemView)
                 .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
                 .onDisappear(perform: {
                     showItemView = false
@@ -35,26 +35,26 @@ struct GalleryView: View {
                                 AsyncImage(url:featuredImage.url){ image in
                                     image
                                         .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height:460)
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width:386, height:480)
                                 } placeholder: {
                                     ProgressView()
-                                        .frame(width:460, height:460)
+                                        .frame(width:386, height:480)
                                 }
                             } else if let firstImage = thisContent.imagesData.first {
                                 AsyncImage(url:firstImage.url){ image in
                                     image
                                         .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height:460)
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width:386, height:480)
                                 } placeholder: {
-                                    ProgressView()                                        .frame(width:460, height:460)
+                                    ProgressView()                                        .frame(width:386,  height:480)
 
                                 }
                             } else if let firstImageName = thisContent.localImages.first {
                                 Image(firstImageName)                                        .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height:460)
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width:386, height:480)
                             } else {
                                 ContentUnavailableView(thisContent.title, systemImage: "gobackward")
                             }
@@ -63,11 +63,13 @@ struct GalleryView: View {
                                 VStack(alignment: .leading, spacing: 0){
                                     Text(thisContent.title)
                                         .multilineTextAlignment(.leading)
+                                        .frame(maxWidth:354)
                                         .font(.headline)
                                         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                                     if let price = thisContent.variantPrices.first?.amount {
                                         Text("from \(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))")
                                             .multilineTextAlignment(.leading)
+                                            .frame(maxWidth:354)
                                             .font(.subheadline)
                                             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                                         

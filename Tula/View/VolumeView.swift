@@ -17,10 +17,16 @@ struct VolumeView: View {
     @State public var flowerEntity:Entity = Entity()
     @State private var toyTransform:Transform = Transform.identity
     @State private var allowsRotation = true
+
+    @State private var showCheckout = true
     @Binding public var shopifyModel:ShopifyModel
     public let model:ModelViewContent
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var placementModel:ModelViewContent?
+    @Binding public var currentIndex:Int
+    @State public var checkoutAttachmentEntity:ViewAttachmentEntity?
+    @State public var indicatorAttachmentEntity:ViewAttachmentEntity?
+
     var body: some View {
             RealityView { scene, attachments in
                 resetState(for: scene, attachments: attachments)
@@ -28,48 +34,81 @@ struct VolumeView: View {
                 if flowerEntity.name != model.usdzModelName {
                     resetState(for: scene, attachments: attachments)
                 }
+                if !showCheckout && checkoutAttachmentEntity != nil {
+                    resetState(for: scene, attachments: attachments)
+                }
+                if checkoutAttachmentEntity == nil,flowerEntity.name == model.usdzModelName, showCheckout {
+                    resetState(for: scene, attachments: attachments)
+                }
             } attachments: {
+                Attachment(id:"back") {
+                    Button {
+                        scroll(to: currentIndex - 1)
+                    } label: {
+                        Label("Checkout", systemImage: "chevron.left")
+                    }.labelStyle(.iconOnly)
+                }
+                Attachment(id:"forward") {
+                    Button {
+                        scroll(to:currentIndex + 1)
+                    } label: {
+                        Label("Checkout", systemImage: "chevron.right")
+                    }.labelStyle(.iconOnly)
+                }
+                Attachment(id: "indicator") {
+                    Button {
+                        showCheckout.toggle()
+                    } label: {
+                        Label("Checkout", systemImage: showCheckout ? "xmark" : "checkmark")
+                    }.labelStyle(.iconOnly)
+                }
                 Attachment(id: "label") {
                     ZStack(content: {
                         RoundedRectangle(cornerRadius: 30).foregroundStyle(.thinMaterial)
-                        VStack(alignment: .center, content: {
+                        VStack(alignment: .leading, content: {
                             HStack {
                                 if let featuredImage = model.featuredImage {
                                     AsyncImage(url:featuredImage.url)
                                         .frame(width:108, height:136)
                                         .cornerRadius(15)
+                                        .padding(.vertical, 8)
 
                                 } else if let featuredImage = model.localImages.first {
                                     Image(featuredImage)
                                         .resizable()
                                         .frame(width:108, height:136)
                                         .cornerRadius(15)
+                                        .padding(.vertical,8)
                                 }
-                                VStack {
+                                VStack(alignment: .leading, spacing: 0){
+                                    Spacer()
                                     Text(model.title).bold().padding(4)
                                     if let firstVariant = model.variantPrices.first {
                                         HStack{
-                                            Text(firstVariant.title)
+                                            Text(firstVariant.title).padding(4)
                                             let price = NSDecimalNumber(decimal: firstVariant.amount).doubleValue
-                                            Text("\(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))")
+                                            Text("\(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").padding(4)
                                             
                                         }
                                     }
+                                    Spacer()
                                     HStack {
                                         Button{
                                             
                                         } label: {
-                                            Label("Add to cart", systemImage: "cart.badge.plus")
+                                            Label("Add", systemImage: "cart.badge.plus")
                                         }
+                                        .padding(4)
                                         PaymentButton().frame(width: 486/3, height:60)
                                     }
+                                    Spacer()
                                 }
                                 
-                            }.padding(12)
+                            }
                         })
                         
                     })
-                    .frame(maxWidth:486, maxHeight:160)
+                    .frame(maxWidth:480, maxHeight:184)
                 }
                 
             }
@@ -79,19 +118,23 @@ struct VolumeView: View {
                 flowerEntity.transform = newTransform
             }
             .gesture(
-                DragGesture()
+                ExclusiveGesture(
+                TapGesture().targetedToEntity(flowerEntity).onEnded({ _ in
+                    showCheckout.toggle()
+                }),
+                    DragGesture()
                     .targetedToEntity(flowerEntity)
                     .onChanged({ value in
                     let width = value.translation.width
                     let height = value.translation.height
                     print(width)
                     let xAngle = Angle(degrees: width)
-                    let yAngle = Angle(degrees: height)
                     let xRotation = simd_quatf(angle: Float(xAngle.radians), axis: SIMD3(0,1,0))
                     let rotation = xRotation
                     let transform = Transform(scale:SIMD3(1,1,1), rotation:rotation, translation:SIMD3.zero)
                     toyTransform = transform
-                })
+                    })
+                )
             )
         /*
             .gesture(
@@ -124,43 +167,62 @@ struct VolumeView: View {
     
     @MainActor
     func resetState(for scene:RealityViewContent, attachments:RealityViewAttachments){
-        print("reset state")
-
         Task { @MainActor in
             do {
                 flowerEntity.removeFromParent()
+                checkoutAttachmentEntity?.removeFromParent()
+                checkoutAttachmentEntity = nil
 
                 flowerEntity = try await Entity(named: model.usdzModelName, in:realityKitContentBundle)
-            
-                flowerEntity.name = model.usdzModelName
-                                
-                flowerEntity.generateCollisionShapes(recursive: true)
-                flowerEntity.components.set(InputTargetComponent())
-                flowerEntity.setPosition(SIMD3(0,-0.15,0), relativeTo:nil)
-                flowerEntity.setScale(SIMD3(1,1,1), relativeTo: nil)
+                        
+                if flowerEntity.parent == nil {
+                    print("adding flower entity")
+                    flowerEntity.name = model.usdzModelName
+                                    
+                    flowerEntity.generateCollisionShapes(recursive: true)
+                    flowerEntity.components.set(InputTargetComponent())
+                    flowerEntity.setPosition(SIMD3(0,-0.35,0), relativeTo:nil)
+                    flowerEntity.setScale(SIMD3(1,1,1), relativeTo: nil)
+                    
+                    guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
+                    else { return }
+                    
+                    let iblComponent = ImageBasedLightComponent(source: .single(env),
+                                                                intensityExponent: 1)
+                    
+                    flowerEntity.components[ImageBasedLightComponent.self] = iblComponent
+                    flowerEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: flowerEntity))
+
+                    scene.entities.removeAll()
+                    scene.add(flowerEntity)
+                }
                 
-                guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
-                else { return }
-                
-                let iblComponent = ImageBasedLightComponent(source: .single(env),
-                                                            intensityExponent: 1)
-                
-                flowerEntity.components[ImageBasedLightComponent.self] = iblComponent
-                flowerEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: flowerEntity))
-                scene.add(flowerEntity)
-                
-                if let label = attachments.entity(for: "label") {
-                    label.setPosition(SIMD3(0,-0.4,0.3), relativeTo: nil)
+                if let label = attachments.entity(for: "label"), showCheckout {
+                    label.setPosition(SIMD3(0,-0.425,0.2), relativeTo: nil)
+                    checkoutAttachmentEntity = label
                     scene.add(label)
                 }
-
+                
+                if let forward = attachments.entity(for: "forward"), showCheckout {
+                    forward.setPosition(SIMD3(0.21,-0.42, 0.215), relativeTo: nil)
+                    scene.add(forward)
+                }
+                
+                if let back = attachments.entity(for: "back"), showCheckout {
+                    back.setPosition(SIMD3(-0.21,-0.42, 0.215), relativeTo: nil)
+                    scene.add(back)
+                }
             } catch {
                 print(error)
             }
         }
     }
+    
+    private func scroll(to index: Int) {
+        currentIndex = index.clamped(to: 0..<modelContent.count) // Adjust clamping range
+    }
 }
 
 #Preview {
-    return VolumeView(appState: .constant(TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), model: TulaApp.defaultContent.first!, modelContent: .constant(TulaApp.defaultContent), placementModel: .constant(nil))
+    return VolumeView(appState: .constant(TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), model: TulaApp.defaultContent.first!, modelContent: .constant(TulaApp.defaultContent), placementModel: .constant(nil), currentIndex: .constant(0))
 }

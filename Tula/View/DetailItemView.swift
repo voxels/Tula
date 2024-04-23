@@ -13,6 +13,7 @@ struct DetailItemView: View {
     @Binding public var content:ModelViewContent?
     @Binding public var playerModel:PlayerModel
     @Binding public var currentIndex:Int
+    @Binding public var showItemView:Bool
     @State private var showVideo = false
     var body: some View {
         GeometryReader(content: { geo in
@@ -86,7 +87,7 @@ playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inlin
             .overlay {
                     VStack{
                         HStack {
-                            if currentIndex > 0{
+                            if currentIndex > 0 {
                                 Button {
                                     scroll(to: currentIndex - 1)
                                 } label: {
@@ -96,11 +97,12 @@ playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inlin
                                 .padding(24)
                             } else {
                                 Button {
-                                    scroll(to: modelContent.count - 1)
+                                    content = nil
+                                    showItemView = false
                                 } label: {
-                                    Label("previous", systemImage: "chevron.left")
+                                    Label("Gallery", systemImage: "chevron.left")
                                 }
-                                .labelStyle(.iconOnly)
+                                .labelStyle(.titleAndIcon)
                                 .padding(24)
                             }
                             Spacer()
@@ -139,7 +141,7 @@ playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inlin
 }
 
 #Preview {
-    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0))
+    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0), showItemView: .constant(true))
 }
 
 extension Comparable {

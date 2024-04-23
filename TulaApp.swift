@@ -18,6 +18,7 @@ struct TulaApp: App {
     @State private var placementModel:ModelViewContent?
     @State private var playerModel = PlayerModel()
     @State private var shopifyModel = ShopifyModel()
+    @State private var currentIndex:Int = 0
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
@@ -77,7 +78,7 @@ struct TulaApp: App {
                  */
 
             } else {
-                ContentView( appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, playerModel:$playerModel, selectedModel: $selectedModel, placementModel: $placementModel )
+                ContentView( appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, playerModel:$playerModel, selectedModel: $selectedModel, placementModel: $placementModel, currentIndex: $currentIndex )
                     .onChange(of: modelContent, { oldValue, newValue in
                         Task {
                             await modelLoader.loadObjects(content: newValue)
@@ -163,7 +164,7 @@ struct TulaApp: App {
         
         WindowGroup("Tula House", id: "VolumeSmallView", content: {
             if let model = selectedModel {
-                VolumeView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, model: model, modelContent: $modelContent, placementModel: $placementModel)
+                VolumeView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, model: model, modelContent: $modelContent, placementModel: $placementModel, currentIndex: $currentIndex)
             } else {
                 ProgressView("No model selected")
             }
@@ -173,7 +174,7 @@ struct TulaApp: App {
 
         WindowGroup("Tula House", id: "VolumeLargeView", content: {
             if let model = selectedModel {
-                VolumeView(appState: $appState, modelLoader: $modelLoader,  shopifyModel: $shopifyModel, model: model, modelContent: $modelContent,  placementModel: $placementModel)
+                VolumeView(appState: $appState, modelLoader: $modelLoader,  shopifyModel: $shopifyModel, model: model, modelContent: $modelContent,  placementModel: $placementModel, currentIndex: $currentIndex)
             } else {
                 ProgressView("No model selected")
             }

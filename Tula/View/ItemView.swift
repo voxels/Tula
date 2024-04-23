@@ -26,8 +26,6 @@ struct ItemView: View {
     var body: some View {
         GeometryReader(content: { geo in
             VStack(alignment: .center, spacing:0, content: {
-                Text(content.title).font(.largeTitle)
-                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
                 HStack(alignment:.center, spacing:0, content: {
                     VStack(spacing:0){
                         ScrollViewReader(content: { scrollViewProxy in
@@ -35,6 +33,7 @@ struct ItemView: View {
                                 HStack(alignment:.center,spacing:0) {
                                     if !content.imagesData.isEmpty {
                                         ForEach(0..<content.imagesData.count, id:\.self) { index in
+                                            ZStack {
                                             let imageData = content.imagesData[index]
                                             AsyncImage(url:imageData.url){ image in
                                                 image
@@ -56,28 +55,32 @@ struct ItemView: View {
                                                     )
                                                 )
                                                 .id(index)
+                                            }
                                         }
                                     } else {
                                         ForEach(0..<content.localImages.count, id:\.self) { index in
-                                            let imageData = content.localImages[index]
-                                            Image(imageData)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .cornerRadius(16)
-                                                .frame(maxWidth: geo.size.width / 3 - (24 * 2)).contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                                .clipShape(
-                                                    .rect(
-                                                        topLeadingRadius: 16,
-                                                        bottomLeadingRadius: 16,
-                                                        bottomTrailingRadius: 16,
-                                                        topTrailingRadius: 16
+                                            ZStack {
+                                                
+                                                let imageData = content.localImages[index]
+                                                Image(imageData)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .cornerRadius(16)
+                                                    .frame(maxWidth: geo.size.width / 3 - (24 * 2)).contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                                    .clipShape(
+                                                        .rect(
+                                                            topLeadingRadius: 16,
+                                                            bottomLeadingRadius: 16,
+                                                            bottomTrailingRadius: 16,
+                                                            topTrailingRadius: 16
+                                                        )
                                                     )
-                                                )
-                                                .id(index)
+                                                    .id(index)
+                                            }
                                             
                                         }
                                     }
-                                }
+                                }.scrollTargetLayout()
                             }.scrollTargetBehavior(.paging)
                             HStack {
                                 if !content.imagesData.isEmpty {
@@ -123,30 +126,45 @@ struct ItemView: View {
                         })
                     }
                     .frame(width: geo.size.width / 3 - 48)
-                    .padding(24)
-                    VStack(alignment: .leading, spacing:8){
+                    .padding(.vertical, 24)
+                    .padding(.horizontal,16)
+                    VStack(alignment: .leading, spacing:0){
+                        Text(content.title).font(.largeTitle)
+                            .padding(EdgeInsets(top: 32, leading: 16, bottom: 16, trailing: 16))
+                        HStack {
+                            Button {
+                                
+                            } label: {
+                                Label("Small", systemImage:"basket.fill")
+                            }.labelStyle(.titleOnly)
+                            Button {
+                                
+                            } label: {
+                                Label("Large", systemImage:"basket.fill")
+                            }.labelStyle(.titleOnly)
+                            Button {
+                                
+                            } label: {
+                                Label("Specimen", systemImage:"basket.fill")
+                            }.labelStyle(.titleOnly)
+                            Spacer()
+                        }
                         HStack(alignment:.center, content: {
-                            Text("Price: ")
                             Text("\(selectedPrice.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").bold()
                             Spacer()
                         }).padding(EdgeInsets(top: 24, leading: 0, bottom: 16, trailing: 0))
                         HStack(alignment:.center, content: {
                             Text("Quantity")
-                            Button("Remove", systemImage: "minus") {
+                            Button("Remove", systemImage: "chevron.left") {
                                 if quantity > 0 {
                                     quantity -= 1
                                 }
                             }.labelStyle(.iconOnly)
                             Text("\(quantity)")
-                            Button("Add", systemImage: "plus") {
+                            Button("Add", systemImage: "chevron.right") {
                                 quantity += 1
                             }.labelStyle(.iconOnly)
                             Spacer()
-                            Button {
-                                
-                            } label: {
-                                Label("Select size", systemImage:"basket.fill")
-                            }
                         }).padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
                         HStack(alignment:.center) {
                             Button {
@@ -177,7 +195,7 @@ struct ItemView: View {
                                 do {
                                     let entity = try await Entity(named: content.usdzModelName, in:realityKitContentBundle)
                                     entity.position = SIMD3(0, -0.125, 0.20)
-                                    entity.setScale(SIMD3(0.5,0.5,0.5), relativeTo: nil)
+                                    entity.setScale(SIMD3(0.75,0.75,0.75), relativeTo: nil)
                                     scene.add(entity)
                                     
                                     guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
@@ -208,17 +226,17 @@ struct ItemView: View {
                                 }
                             } label: {
                                 Label("Place in your space", systemImage: "cube")
-                            }
+                            }.padding(.bottom, 16)
                             Button {
                                 showVideo.toggle()
                             } label: {
                                 Label("Plant care", systemImage: "video.fill")
                             }
                         }
-                    }.frame(width: geo.size.width / 3 - 48).padding(24)
+                    }.frame(width: geo.size.width / 3 - 48).padding(.vertical,24)
                 })
             })
-        })
+        }).padding(.top, 32)
         .task {
             if let firstVariant = content.variantPrices.first {
                 selectedPrice = NSDecimalNumber(decimal:firstVariant.amount).floatValue

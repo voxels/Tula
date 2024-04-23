@@ -18,6 +18,7 @@ public struct ContentView: View {
     @Binding public var playerModel:PlayerModel
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
+    @Binding public var currentIndex:Int
     @State private var showARSpace = false
     @State private var showApplePay = false
 
@@ -27,6 +28,6 @@ public struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     
     public var body: some View {
-        DetailView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$selectedModel, playerModel: $playerModel, placementModel: $placementModel)
+        DetailView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$selectedModel, playerModel: $playerModel, placementModel: $placementModel, currentIndex: $currentIndex)
     }
 }
