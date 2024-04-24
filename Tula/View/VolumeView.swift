@@ -169,13 +169,15 @@ struct VolumeView: View {
     func resetState(for scene:RealityViewContent, attachments:RealityViewAttachments){
         Task { @MainActor in
             do {
-                flowerEntity.removeFromParent()
+                //flowerEntity.removeFromParent()
                 checkoutAttachmentEntity?.removeFromParent()
                 checkoutAttachmentEntity = nil
-
-                flowerEntity = try await Entity(named: model.usdzModelName, in:realityKitContentBundle)
                         
                 if flowerEntity.parent == nil {
+                    
+                    
+                    flowerEntity = try await Entity(named: model.usdzModelName, in:realityKitContentBundle)
+
                     print("adding flower entity")
                     flowerEntity.name = model.usdzModelName
                                     
@@ -219,7 +221,13 @@ struct VolumeView: View {
     }
     
     private func scroll(to index: Int) {
-        currentIndex = index.clamped(to: 0..<modelContent.count) // Adjust clamping range
+        if index == modelContent.count  {
+            currentIndex = 0
+        } else if index == -1 {
+            currentIndex = modelContent.count - 1
+        } else {
+            currentIndex = index.clamped(to: 0..<modelContent.count) // Adjust clamping range
+        }
     }
 }
 

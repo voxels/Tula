@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E0172C62BD824A7009120DA /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0172C52BD824A7009120DA /* SafariWebView.swift */; };
 		1E17FDEC2B7E89A8005DAEC8 /* DetailItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */; };
 		1E17FDEE2B7E89FC005DAEC8 /* DetailCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */; };
 		1E17FDF02B7E8E75005DAEC8 /* ImmersiveIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */; };
@@ -115,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1E0172C52BD824A7009120DA /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
 		1E17FDEB2B7E89A8005DAEC8 /* DetailItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItemView.swift; sourceTree = "<group>"; };
 		1E17FDED2B7E89FC005DAEC8 /* DetailCartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCartView.swift; sourceTree = "<group>"; };
 		1E17FDEF2B7E8E75005DAEC8 /* ImmersiveIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveIntroView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				1E188A412B7FC6C400BAFC8C /* ItemView.swift */,
 				1E4687602B63E51600F18FB9 /* ImmersiveView.swift */,
 				1E188A432B82644D00BAFC8C /* VolumeView.swift */,
+				1E0172C52BD824A7009120DA /* SafariWebView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				1E1A985C2B76525800C92D85 /* PlaneProjector.swift in Sources */,
 				1EB50B7A2B9CB8E700FA55F2 /* OnboardingView.swift in Sources */,
 				1E17FDEC2B7E89A8005DAEC8 /* DetailItemView.swift in Sources */,
+				1E0172C62BD824A7009120DA /* SafariWebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
