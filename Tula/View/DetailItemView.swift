@@ -65,7 +65,7 @@ struct DetailItemView: View {
                             }.onChange(of:showVideo) { oldValue, newValue in
                                 if newValue {
                                     Task { @MainActor in
-playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inline)
+                                        playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inline)
                                     }
                                 }
                             }
@@ -85,49 +85,67 @@ playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inlin
                 })
             }
             .overlay {
-                    VStack{
-                        HStack {
-                            if currentIndex > 0 {
-                                Button {
-                                    scroll(to: currentIndex - 1)
-                                } label: {
-                                    Label("previous", systemImage: "chevron.left")
-                                }
-                                .labelStyle(.iconOnly)
-                                .padding(24)
-                            } else {
-                                Button {
-                                    content = nil
-                                    showItemView = false
-                                } label: {
-                                    Label("Gallery", systemImage: "chevron.left")
-                                }
-                                .labelStyle(.titleAndIcon)
-                                .padding(24)
-                            }
-                            Spacer()
+                VStack{
+                    HStack {
+                        
+                        if currentIndex > 0 {
                             
-                            if currentIndex < modelContent.count - 1{
-                                Button {
-                                    scroll(to: currentIndex + 1)
-                                } label: {
-                                    Label("next", systemImage: "chevron.right")
-                                }
-                                .labelStyle(.iconOnly)
-                                .padding(24)
-                            } else {
-                                Button {
-                                    scroll(to: 0)
-                                } label: {
-                                    Label("next", systemImage: "chevron.right")
-                                }
-                                .labelStyle(.iconOnly)
-                                .padding(24)
+                            Button {
+                                scroll(to: currentIndex - 1)
+                            } label: {
+                                Label("previous", systemImage: "chevron.left")
                             }
+                            .labelStyle(.iconOnly)
+                            .padding(.leading, 24)
+                        } else {
+                            Button {
+                                scroll(to: modelContent.count - 1)
+                            } label: {
+                                Label("previous", systemImage: "chevron.left")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(.leading, 24)
                         }
+                        
+                        Button {
+                            content = nil
+                            showItemView = false
+                        } label: {
+                            Label("Gallery", systemImage: "chevron.left")
+                        }
+                        .labelStyle(.titleOnly)
+                        .padding(.horizontal, 8)
+                        
                         Spacer()
+                        
+                        Image("Tula-House-Logo-White")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight:60)
+                        
+                        Spacer()
+                        
+                        if currentIndex < modelContent.count - 1{
+                            Button {
+                                scroll(to: currentIndex + 1)
+                            } label: {
+                                Label("next", systemImage: "chevron.right")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(24)
+                        } else {
+                            Button {
+                                scroll(to: 0)
+                            } label: {
+                                Label("next", systemImage: "chevron.right")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(24)
+                        }
                     }
+                    Spacer()
                 }
+            }
         })
         .popover(isPresented: $showVideo) {
             PlayerViewController(model: $playerModel)

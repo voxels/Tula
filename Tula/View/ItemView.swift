@@ -29,7 +29,7 @@ struct ItemView: View {
                 HStack(alignment:.center, spacing:0, content: {
                     VStack(spacing:0){
                         ScrollViewReader(content: { scrollViewProxy in
-                            ScrollView(.horizontal){
+                            ScrollView(.horizontal, showsIndicators: false){
                                 HStack(alignment:.center,spacing:0) {
                                     if !content.imagesData.isEmpty {
                                         ForEach(0..<content.imagesData.count, id:\.self) { index in
@@ -82,6 +82,8 @@ struct ItemView: View {
                                     }
                                 }.scrollTargetLayout()
                             }.scrollTargetBehavior(.paging)
+                                .scrollDisabled(true)
+                                
                             HStack {
                                 if !content.imagesData.isEmpty {
                                     ForEach(0..<min(content.imagesData.count, 4), id:\.self) { index in

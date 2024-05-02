@@ -26,6 +26,7 @@ struct VolumeView: View {
     @Binding public var currentIndex:Int
     @State public var checkoutAttachmentEntity:ViewAttachmentEntity?
     @State public var indicatorAttachmentEntity:ViewAttachmentEntity?
+    @Environment(\.dismissWindow) private var dismissWindow
 
     var body: some View {
             RealityView { scene, attachments in
@@ -72,6 +73,7 @@ struct VolumeView: View {
                                         .frame(width:108, height:136)
                                         .cornerRadius(15)
                                         .padding(.vertical, 8)
+                                        .padding(.leading, 24)
 
                                 } else if let featuredImage = model.localImages.first {
                                     Image(featuredImage)
@@ -79,6 +81,7 @@ struct VolumeView: View {
                                         .frame(width:108, height:136)
                                         .cornerRadius(15)
                                         .padding(.vertical,8)
+                                        .padding(.leading, 24)
                                 }
                                 VStack(alignment: .leading, spacing: 0){
                                     Spacer()
@@ -103,7 +106,7 @@ struct VolumeView: View {
                                     }
                                     Spacer()
                                 }
-                                
+                                Spacer()
                             }
                         })
                         
@@ -167,15 +170,14 @@ struct VolumeView: View {
     
     @MainActor
     func resetState(for scene:RealityViewContent, attachments:RealityViewAttachments){
+        print("reset state")
         Task { @MainActor in
             do {
-                //flowerEntity.removeFromParent()
+                
                 checkoutAttachmentEntity?.removeFromParent()
                 checkoutAttachmentEntity = nil
                         
-                if flowerEntity.parent == nil {
-                    
-                    
+                if flowerEntity.parent == nil || (flowerEntity.parent != nil && flowerEntity.name != model.usdzModelName)  {
                     flowerEntity = try await Entity(named: model.usdzModelName, in:realityKitContentBundle)
 
                     print("adding flower entity")
@@ -198,24 +200,24 @@ struct VolumeView: View {
                     scene.entities.removeAll()
                     scene.add(flowerEntity)
                 }
-                
-                if let label = attachments.entity(for: "label"), showCheckout {
-                    label.setPosition(SIMD3(0,-0.425,0.2), relativeTo: nil)
-                    checkoutAttachmentEntity = label
-                    scene.add(label)
-                }
-                
-                if let forward = attachments.entity(for: "forward"), showCheckout {
-                    forward.setPosition(SIMD3(0.21,-0.42, 0.215), relativeTo: nil)
-                    scene.add(forward)
-                }
-                
-                if let back = attachments.entity(for: "back"), showCheckout {
-                    back.setPosition(SIMD3(-0.21,-0.42, 0.215), relativeTo: nil)
-                    scene.add(back)
-                }
             } catch {
                 print(error)
+            }
+            
+            if let label = attachments.entity(for: "label"), showCheckout {
+                label.setPosition(SIMD3(0,-0.425,0.2), relativeTo: nil)
+                checkoutAttachmentEntity = label
+                scene.add(label)
+            }
+            
+            if let forward = attachments.entity(for: "forward"), showCheckout {
+                forward.setPosition(SIMD3(0.21,0, 0), relativeTo: checkoutAttachmentEntity!)
+                checkoutAttachmentEntity?.addChild(forward)
+            }
+            
+            if let back = attachments.entity(for: "back"), showCheckout {
+                back.setPosition(SIMD3(-0.21,0, 0), relativeTo: checkoutAttachmentEntity!)
+                checkoutAttachmentEntity?.addChild(back)
             }
         }
     }

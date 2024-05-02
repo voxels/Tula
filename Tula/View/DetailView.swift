@@ -33,16 +33,16 @@ struct DetailView: View {
 //                ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)
 //            }
 //        } else {
-        TabView {
+//        TabView {
             GalleryView(collectionID: UUID(), appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, playerModel: $playerModel, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
                 .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
-                .tabItem { Label("Gallery", systemImage:"tree")}
-                .tag(0)
-            SafariWebView(url: URL(string:"https://tula.house")!)
-                .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
-                .tabItem{Label("Cart", systemImage: "cart")}
-                .tag(1)
-        }.frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+//                .tabItem { Label("Gallery", systemImage:"tree")}
+//                .tag(0)
+//            SafariWebView(url: URL(string:"https://tula.house")!)
+//                .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+//                .tabItem{Label("Cart", systemImage: "cart")}
+//                .tag(1)
+//        }.frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
 
 //            if showImmersiveTab {
 //                ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)

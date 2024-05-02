@@ -79,12 +79,11 @@ struct TulaApp: App {
 
             } else {
                 ContentView( appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, playerModel:$playerModel, selectedModel: $selectedModel, placementModel: $placementModel, currentIndex: $currentIndex )
-                    .onChange(of: modelContent, { oldValue, newValue in
-                        Task {
-                            await modelLoader.loadObjects(content: newValue)
+                    .task {
+                                                    await modelLoader.loadObjects(content: modelContent)
                             appState.setPlaceableObjects(modelLoader.placeableObjects)
-                        }
-                    })
+                        
+                    }
                     .onChange(of: selectedModel, { oldValue, newValue in
                         if newValue == nil {
                             placementModel = nil
@@ -166,7 +165,10 @@ struct TulaApp: App {
             if let model = selectedModel {
                 VolumeView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, model: model, modelContent: $modelContent, placementModel: $placementModel, currentIndex: $currentIndex)
             } else {
-                ProgressView("No model selected")
+                ProgressView()
+                    .task{
+                        dismissWindow(id:"VolumeSmallView")
+                    }
             }
         })
         .windowStyle(.volumetric)
@@ -176,7 +178,10 @@ struct TulaApp: App {
             if let model = selectedModel {
                 VolumeView(appState: $appState, modelLoader: $modelLoader,  shopifyModel: $shopifyModel, model: model, modelContent: $modelContent,  placementModel: $placementModel, currentIndex: $currentIndex)
             } else {
-                ProgressView("No model selected")
+                ProgressView()
+                    .task{
+                        dismissWindow(id:"VolumeLargeView")
+                    }
             }
         })
         .windowStyle(.volumetric)
