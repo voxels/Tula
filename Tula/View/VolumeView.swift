@@ -87,7 +87,9 @@ struct VolumeView: View {
                                 VStack(alignment: .leading, spacing: 0){
                                     Spacer()
                                     Text(model.title).bold().padding(4)
-                                    if let firstVariant = model.variantPrices.first {
+                                    if let firstVariant = model.variantPrices.first(where: { data in
+                                        data.availableForSale && data.quantityAvailable > 0
+                                    }) {
                                         HStack{
                                             Text(firstVariant.title).padding(4)
                                             let price = NSDecimalNumber(decimal: firstVariant.amount).doubleValue

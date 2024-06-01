@@ -259,7 +259,9 @@ struct ItemView: View {
             })
         }).padding(.top, 32)
         .task {
-            if let firstVariant = content.variantPrices.first {
+            if let firstVariant = content.variantPrices.first(where: { data in
+                data.availableForSale && data.quantityAvailable > 0
+            }) {
                 selectedVariant = firstVariant
                 selectedPrice = NSDecimalNumber(decimal:firstVariant.amount).floatValue
             }
