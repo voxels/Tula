@@ -10,29 +10,21 @@ import SwiftUI
 struct OnboardingView: View {
     @Binding public var showOnboarding:Bool
     @Binding public var modelContent:[ModelViewContent]
-    @State private var isReady:Bool = false
+    @Binding public var isReady:Bool
     var body: some View {
-        Button {
-            showOnboarding = false
-        } label: {
-            Label("Welcome", systemImage: "leaf")
-                .labelStyle(.titleOnly)
-        }.disabled(!isReady)
-            .task {
-                if modelContent.count > 0 {
-                    isReady = true
-                }
-            }
-            .onChange(of: modelContent) { oldValue, newValue in
-                if newValue.count > 0 {
-                    isReady = true
-                } else {
-                    isReady = false
-                }
-            }
+        if isReady {
+            Button {
+                showOnboarding = false
+            } label: {
+                Label("Welcome", systemImage: "leaf")
+                    .labelStyle(.titleOnly)
+            }.disabled(!isReady)
+        } else {
+            ProgressView()
+        }
     }
 }
 
 #Preview {
-    OnboardingView(showOnboarding: .constant(true), modelContent:.constant([]))
+    OnboardingView(showOnboarding: .constant(true), modelContent:.constant([]), isReady: .constant(true))
 }

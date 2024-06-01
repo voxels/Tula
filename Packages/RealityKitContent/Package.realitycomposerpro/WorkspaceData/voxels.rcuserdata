@@ -3,10 +3,10 @@
   "openSceneRelativePaths" : [
     "Immersive.usda",
     "Cereus-forbesii-spiralis-Full.usda",
-    "Euphorbia-abdelkuri-Silver-Full.usda",
     "Monstera-pinnatipartita-siam_Full.usda",
-    "Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full..usda",
-    "Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full.usda"
+    "Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full.usda",
+    "Lophocereus_schotii_monstrose.usda",
+    "Melocactus_Matanzanus.usda"
   ],
   "recentIdentifiers" : {
     "0EC4F9FC-29F7-4609-AA0E-4611B71042EE" : [
@@ -31,6 +31,9 @@
 
     ],
     "55A9C680-7AB5-43FC-81D7-4F9F44EE4A22" : [
+
+    ],
+    "73A5323A-66A9-499A-8308-21AB7D81C22B" : [
 
     ],
     "935F1794-89CE-45D9-B282-5943F9B147AA" : [
@@ -141,6 +144,30 @@
           0,
           0.23496273,
           0.40696746,
+          1
+        ]
+      }
+    ],
+    "1E4CA6A6-6E49-4CD3-BC38-867ECACB613F" : [
+      {
+        "date" : 738952674.425645,
+        "title" : "Untitled",
+        "transform" : [
+          0.99999994,
+          0,
+          -0,
+          0,
+          -0,
+          0.8660255,
+          -0.49999988,
+          0,
+          0,
+          0.49999988,
+          0.8660255,
+          0,
+          0,
+          0.26323542,
+          0.45593718,
           1
         ]
       }
@@ -2523,7 +2550,97 @@
         ]
       }
     ],
+    "73A5323A-66A9-499A-8308-21AB7D81C22B" : [
+      {
+        "date" : 738952727.676093,
+        "title" : "Untitled",
+        "transform" : [
+          0.86275893,
+          -1.1299365e-08,
+          0.5056155,
+          0,
+          0.104857534,
+          0.97825927,
+          -0.17892411,
+          0,
+          -0.49462304,
+          0.20738596,
+          0.8440018,
+          0,
+          -0.6893501,
+          0.2890309,
+          1.1762753,
+          1
+        ]
+      },
+      {
+        "date" : 738952711.3345,
+        "title" : "Untitled",
+        "transform" : [
+          0.99999994,
+          0,
+          -0,
+          0,
+          -0,
+          0.8660255,
+          -0.49999988,
+          0,
+          0,
+          0.49999988,
+          0.8660255,
+          0,
+          0,
+          0.26323542,
+          0.45593718,
+          1
+        ]
+      }
+    ],
     "81AC4078-71D1-4C99-88ED-D5BEBEFFB299" : [
+      {
+        "date" : 737480577.127249,
+        "title" : "Untitled",
+        "transform" : [
+          0.9990238,
+          0,
+          -0.04417507,
+          0,
+          -0.022087535,
+          0.8660254,
+          -0.4995119,
+          0,
+          0.03825673,
+          0.5,
+          0.86517996,
+          0,
+          0.73818415,
+          1.075829,
+          1.9766519,
+          1
+        ]
+      },
+      {
+        "date" : 737480475.525864,
+        "title" : "Untitled",
+        "transform" : [
+          0.9990238,
+          0,
+          -0.04417507,
+          0,
+          -0.022087535,
+          0.8660254,
+          -0.4995119,
+          0,
+          0.03825673,
+          0.5,
+          0.86517996,
+          0,
+          0.8352227,
+          1.2569811,
+          1.8676705,
+          1
+        ]
+      },
       {
         "date" : 734120123.703322,
         "title" : "Untitled",
@@ -5824,5 +5941,5 @@
       }
     ]
   },
-  "selectedSceneRelativePath" : "Monstera-pinnatipartita-siam_Full.usda"
+  "selectedSceneRelativePath" : "Melocactus_Matanzanus.usda"
 }

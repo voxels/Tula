@@ -21,14 +21,14 @@ struct GalleryView: View {
     @State private var showItemView:Bool = false
     var body: some View {
         if showItemView {
-            DetailItemView(appState: $appState, modelContent: $modelContent, content: $content, playerModel: $playerModel, currentIndex:$currentIndex, showItemView: $showItemView)
+            DetailItemView(appState: $appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content: $content, playerModel: $playerModel, currentIndex:$currentIndex, showItemView: $showItemView)
                 .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
                 .onDisappear(perform: {
                     showItemView = false
                 })
         } else {
             ScrollView(.horizontal) {
-                LazyHStack{
+                LazyHStack(spacing:8){
                     ForEach(modelContent) { thisContent in
                         VStack(spacing:0) {
                             if let featuredImage = thisContent.featuredImage {
@@ -60,12 +60,13 @@ struct GalleryView: View {
                             }
                             ZStack(alignment: .center){
                                 Rectangle().foregroundStyle(.thinMaterial)
-                                VStack(alignment: .leading, spacing: 0){
+                                VStack(alignment: .center, spacing: 0){
                                     Text(thisContent.title)
-                                        .multilineTextAlignment(.leading)
+                                        .multilineTextAlignment(.center)
                                         .frame(maxWidth:354)
                                         .font(.headline)
-                                        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                                        .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+                                    
                                     if let price = thisContent.variantPrices.first?.amount {
                                         Text("from \(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))")
                                             .multilineTextAlignment(.leading)
@@ -73,6 +74,10 @@ struct GalleryView: View {
                                             .font(.subheadline)
                                             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                                         
+                                    } else {
+                                        Text("Out of stock")
+                                            .font(.subheadline)
+                                            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                                     }
                                 }
                             }.frame(height:116)
@@ -87,8 +92,24 @@ struct GalleryView: View {
                     }
                 }
             }
+            .overlay {
+                VStack {
+                    HStack{
+                        Spacer()
+                        
+                        Image("Tula-House-Logo-White")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight:60)
+                            .padding(12)
+                        
+                        Spacer()
+                    }
+                    Spacer()
+                }
+            }
             .scrollIndicators(.hidden)
-            .padding(EdgeInsets(top: 0, leading: 16, bottom:0, trailing: 0))
+            .padding(EdgeInsets(top: 0, leading: 16, bottom:0, trailing: 16))
         }
     }
 }

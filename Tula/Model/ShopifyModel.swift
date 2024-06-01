@@ -45,6 +45,8 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
         return !shopifyAPIKey.isEmpty
     }
     private var shopifyAPIKey:String = ""
+    private var cartID:GraphQL.ID?
+    private var cart:Storefront.Cart?
     private var client:Graph.Client {
         get {
             return Graph.Client.init(shopDomain: CloudCache.shopifyWebAddressString, apiKey: shopifyAPIKey)
@@ -52,7 +54,183 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
     }
 
     public var collectionResponses = [ShopifyCollectionResponse]()
+    public var checkoutURL:URL? {
+        get {
+            return cart?.checkoutUrl
+        }
+    }
+    public func createCart() {
+        let createCartMutation = Storefront.buildMutation { $0
+            .cartCreate { $0
+                .cart { $0
+                    .id()
+                }
+            }
+        }
+        
+        let task = client.mutateGraphWith(createCartMutation) { response, error in
+            
+            if let id = response?.cartCreate?.cart?.id {
+                self.cartID = id
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
     
+    public func variant(for content:ModelViewContent) {
+        
+    }
+        
+    public func line(for productID:String,quantity:Int32)->Storefront.CartLineInput {
+        let linesInput:Storefront.CartLineInput =
+            .create(merchandiseId:GraphQL.ID(rawValue: productID), quantity: .value(quantity))
+        
+        return linesInput
+    }
+    
+    public func addCartLines(_ lines:[Storefront.CartLineInput], cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let addLinesMutation = Storefront.buildMutation { $0
+            .cartLinesAdd(lines: lines, cartId: cartID) { $0
+                .cart({ $0
+                    .id()
+                    .lines(first:100){ $0
+                        .edges { $0
+                            .node({$0
+                                .id()
+                                .quantity()
+                                .merchandise({ $0
+                                    .onProductVariant { $0
+                                        .id()
+                                    }
+                                })
+                            })
+                        }
+                    }
+                    .cost({ $0
+                        .totalAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .subtotalAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .totalTaxAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .totalDutyAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                    })
+                })
+            }
+        }
+        
+        let task = client.mutateGraphWith(addLinesMutation) { response, error in
+        
+            if let cart = response?.cartLinesAdd?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            } else {
+                cartCompletion(nil)
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
+    
+    public func removeLines(lineIds: [GraphQL.ID], cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let removeCartLinesMutation = Storefront.buildMutation { $0
+            .cartLinesRemove(cartId: cartID, lineIds: lineIds) { $0
+                .cart { $0
+                    .id()
+                }
+            }
+        }
+        let task = client.mutateGraphWith(removeCartLinesMutation) { response, error in
+            if let cart = response?.cartLinesRemove?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            } else {
+                cartCompletion(nil)
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
+    
+    public func queryCart(cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let query = Storefront.buildQuery { $0
+            .cart(id:cartID) { $0
+                .id()
+                .createdAt()
+                .updatedAt()
+                .checkoutUrl()
+                .lines(first:100){ $0
+                    .edges { $0
+                        .node({$0
+                            .id()
+                            .quantity()
+                            .merchandise({ $0
+                                .onProductVariant { $0
+                                    .id()
+                                }
+                            })
+                            .attributes({ $0
+                                .key()
+                                .value()
+                            })
+                        })
+                    }
+                }
+                .attributes({ $0
+                    .key()
+                    .value()
+                })
+                .cost({ $0
+                    .totalAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .subtotalAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .totalTaxAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .totalDutyAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                })
+            }
+        }
+        
+        let task = client.queryGraphWith(query) { response, error in
+            if let cart = response?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            }
+        }
+        task.resume()
+    }
     
     public func modelViewContent(for collectionID:String) -> [ModelViewContent] {
         var newContent = [ModelViewContent]()
@@ -75,7 +253,7 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
             }
             
             for variant in productResponse.variants {
-                let newVariantData =  (id:variant.id.rawValue, title:variant.title, amount:variant.price.amount, currencyCode: variant.price.currencyCode.rawValue, availableForSale:variant.availableForSale, quantityAvailable:Int(variant.quantityAvailable ?? 0))
+                let newVariantData =  ModelViewContentVariantData(id:variant.id.rawValue, title:variant.title, amount:variant.price.amount, currencyCode: variant.price.currencyCode.rawValue, availableForSale:variant.availableForSale, quantityAvailable:Int(variant.quantityAvailable ?? 0))
                 variantsData.append(newVariantData)
             }
             
@@ -113,11 +291,12 @@ public struct ShopifyProductResponse : Equatable, Identifiable {
     
     public func connect() async throws {
         shopifyAPIKey = try await cache.apiKey(for: .shopifyStorefront)
+        createCart()
     }
-    
+
     public func fetchCollectionResponses(responsesCompletion: @escaping (([ShopifyCollectionResponse]?)->())) {
         let query = Storefront.buildQuery { $0
-            .collections(first:10) { $0
+            .collections(first:50) { $0
                 .nodes { $0
                     .id()
                     .title()

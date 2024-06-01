@@ -17,6 +17,7 @@ struct VolumeView: View {
     @State public var flowerEntity:Entity = Entity()
     @State private var toyTransform:Transform = Transform.identity
     @State private var allowsRotation = true
+    @State private var quantity:Int = 0
 
     @State private var showCheckout = true
     @Binding public var shopifyModel:ShopifyModel
@@ -91,13 +92,15 @@ struct VolumeView: View {
                                             Text(firstVariant.title).padding(4)
                                             let price = NSDecimalNumber(decimal: firstVariant.amount).doubleValue
                                             Text("\(price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").padding(4)
-                                            
                                         }
+                                    } else {
+                                        Text("Out of stock")
+                                            .padding(4)
                                     }
                                     Spacer()
                                     HStack {
                                         Button{
-                                            
+                                            quantity += 1
                                         } label: {
                                             Label("Add", systemImage: "cart.badge.plus")
                                         }

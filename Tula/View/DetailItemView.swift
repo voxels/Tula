@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailItemView: View {
     @Binding public var appState: TulaAppModel
+    @Binding public var shopifyModel:ShopifyModel
     @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
     @Binding public var playerModel:PlayerModel
@@ -24,7 +25,7 @@ struct DetailItemView: View {
                         LazyHStack(spacing: 0, content: {
                             let countObjects = modelContent.count
                             ForEach(0..<countObjects, id: \.self) { index in
-                                ItemView(appState: $appState, content: $modelContent[index], playerModel: $playerModel, showVideo: $showVideo)
+                                ItemView(appState: $appState, shopifyModel: $shopifyModel, content: $modelContent[index], playerModel: $playerModel, showVideo: $showVideo)
                                     .frame(width: geo.size.width, height:geo.size.height - 48)
                                     .id(index)
                                     .padding(0)
@@ -159,7 +160,7 @@ struct DetailItemView: View {
 }
 
 #Preview {
-    DetailItemView(appState: .constant(TulaAppModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0), showItemView: .constant(true))
+    DetailItemView(appState: .constant(TulaAppModel()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0), showItemView: .constant(true))
 }
 
 extension Comparable {

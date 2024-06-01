@@ -8,9 +8,16 @@
 import SwiftUI
 
 public typealias ModelViewContentImageData = (url:URL, width:Int, height:Int, altText:String?)
-public typealias ModelViewContentVariantData = (id:String, title:String, amount:Decimal, currencyCode:String, availableForSale:Bool, quantityAvailable:Int)
+public struct ModelViewContentVariantData : Identifiable, Hashable {
+    public let id:String
+    public let title:String
+    public let amount:Decimal
+    public let currencyCode:String
+    public let availableForSale:Bool
+    public let quantityAvailable:Int
+}
 
-public struct ModelViewContent: Identifiable, Equatable, Hashable {
+public class ModelViewContent: Identifiable, Equatable, Hashable {
     public static func == (lhs: ModelViewContent, rhs: ModelViewContent) -> Bool {
         lhs.id == rhs.id
     }
@@ -31,5 +38,18 @@ public struct ModelViewContent: Identifiable, Equatable, Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(title)
+    }
+    
+    public init(productId: String, title: String, description: String, featuredImage: ModelViewContentImageData? = nil, usdzModelName: String, usdzFullSizeModelName: String, imagesData: [ModelViewContentImageData], localImages: [String], videoURLString: String? = nil, variantPrices: [ModelViewContentVariantData]) {
+        self.productId = productId
+        self.title = title
+        self.description = description
+        self.featuredImage = featuredImage
+        self.usdzModelName = usdzModelName
+        self.usdzFullSizeModelName = usdzFullSizeModelName
+        self.imagesData = imagesData
+        self.localImages = localImages
+        self.videoURLString = videoURLString
+        self.variantPrices = variantPrices
     }
 }

@@ -12,11 +12,14 @@ import RealityKitContent
 
 @MainActor
 struct ItemView: View {
+    @Environment(\.openURL) var openURL
     @Binding public var appState: TulaAppModel
+    @Binding public var shopifyModel:ShopifyModel
     @Binding public var content:ModelViewContent
     @Binding public var playerModel:PlayerModel
     @Binding public var showVideo:Bool
     @State private var selectedPrice:Float = 0
+    @State private var selectedVariant:ModelViewContentVariantData?
     @State private var quantity:Int = 0
     @State private var flowerModelAnchorEntity:Entity?
     @State private var flowerModelEntity:Entity?
@@ -132,51 +135,67 @@ struct ItemView: View {
                     .padding(.horizontal,16)
                     VStack(alignment: .leading, spacing:0){
                         Text(content.title).font(.largeTitle)
-                            .padding(EdgeInsets(top: 32, leading: 16, bottom: 16, trailing: 16))
+                            .padding(EdgeInsets(top: 32, leading: 0, bottom: 16, trailing: 16))
                         HStack {
-                            Button {
-                                
-                            } label: {
-                                Label("Small", systemImage:"basket.fill")
-                            }.labelStyle(.titleOnly)
-                            Button {
-                                
-                            } label: {
-                                Label("Large", systemImage:"basket.fill")
-                            }.labelStyle(.titleOnly)
-                            Button {
-                                
-                            } label: {
-                                Label("Specimen", systemImage:"basket.fill")
-                            }.labelStyle(.titleOnly)
+                            ForEach(content.variantPrices, id:\.self) { variant in
+                                if variant.availableForSale && variant.quantityAvailable > 0 {
+                                    Button {
+                                        selectedPrice = NSDecimalNumber(decimal:variant.amount).floatValue
+                                        selectedVariant = variant
+                                    } label: {
+                                        Label(variant.title, systemImage:"basket.fill")
+                                    }.labelStyle(.titleOnly)
+                                }
+                            }
                             Spacer()
                         }
-                        HStack(alignment:.center, content: {
-                            Text("\(selectedPrice.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").bold()
-                            Spacer()
-                        }).padding(EdgeInsets(top: 24, leading: 0, bottom: 16, trailing: 0))
-                        HStack(alignment:.center, content: {
-                            Text("Quantity")
-                            Button("Remove", systemImage: "chevron.left") {
-                                if quantity > 0 {
-                                    quantity -= 1
+                        if !content.variantPrices.isEmpty {
+                            HStack(alignment:.center, content: {
+                                Text("\(selectedPrice.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD")))").bold()
+                                Spacer()
+                            }).padding(EdgeInsets(top: 24, leading: 0, bottom: 16, trailing: 0))
+                            HStack(alignment:.center, content: {
+                                Text("Quantity")
+                                Button("Remove", systemImage: "minus") {
+                                    if quantity > 0 {
+                                        quantity -= 1
+                                    }
+                                }.labelStyle(.iconOnly)
+                                Text("\(quantity)")
+                                Button("Add", systemImage: "plus") {
+                                    quantity += 1
+                                }.labelStyle(.iconOnly)
+                                Spacer()
+                            }).padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
+                            HStack(alignment:.center) {
+                                Button {
+                                    if let selectedVariant = selectedVariant, quantity > 0 {
+                                        shopifyModel.queryCart { cart in
+                                            let line = shopifyModel.line(for:selectedVariant.id, quantity: Int32(quantity))
+                                            shopifyModel.addCartLines([line]) { cart in
+                                                
+                                            }
+                                        }
+                                    }                                } label: {
+                                    Label("Add to cart", systemImage: "cart.badge.plus")
                                 }
-                            }.labelStyle(.iconOnly)
-                            Text("\(quantity)")
-                            Button("Add", systemImage: "chevron.right") {
-                                quantity += 1
-                            }.labelStyle(.iconOnly)
-                            Spacer()
-                        }).padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
-                        HStack(alignment:.center) {
-                            Button {
+                                Button(action: {
+                                    shopifyModel.queryCart { _ in
+                                        if let checkoutURL = shopifyModel.checkoutURL {
+                                            openURL(checkoutURL)
+                                        }
+                                    }
+                                }, label: {
+                                    
+                                    Label("Checkout", systemImage: "cart")
+                                }).frame(width: 486/3, height:60)
                                 
-                            } label: {
-                                Label("Add to cart", systemImage: "cart.badge.plus")
-                            }
-                            PaymentButton().frame(width: 486/3, height:60)
-                            
-                        }.padding(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
+                            }.padding(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
+                        } else {
+                            Text("Out of stock")
+                                .bold()
+                                .padding(.bottom, 24)
+                        }
                         ScrollView(.vertical) {
                             Text(content.description)
                                 .multilineTextAlignment(.leading)
@@ -232,7 +251,7 @@ struct ItemView: View {
                             Button {
                                 showVideo.toggle()
                             } label: {
-                                Label("Plant care", systemImage: "video.fill")
+                                Label("Plant care video", systemImage: "video")
                             }
                         }
                     }.frame(width: geo.size.width / 3 - 48).padding(.vertical,24)
@@ -241,6 +260,7 @@ struct ItemView: View {
         }).padding(.top, 32)
         .task {
             if let firstVariant = content.variantPrices.first {
+                selectedVariant = firstVariant
                 selectedPrice = NSDecimalNumber(decimal:firstVariant.amount).floatValue
             }
         }
@@ -248,5 +268,5 @@ struct ItemView: View {
 }
 
 #Preview {
-    ItemView(appState: .constant(TulaAppModel()), content: .constant(TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), showVideo: .constant(false))
+    ItemView(appState: .constant(TulaAppModel()), shopifyModel: .constant(ShopifyModel()), content: .constant(TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), showVideo: .constant(false))
 }
