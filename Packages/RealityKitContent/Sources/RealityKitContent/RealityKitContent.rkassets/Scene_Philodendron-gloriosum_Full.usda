@@ -10,13 +10,18 @@
 
 def Xform "Root"
 {
-    def "Lophocereus_schotii_monstrose" (
+    def "Philodendron_gloriosum_Full" (
         active = true
-        prepend references = @Stock/Lophocereus_schotii_monstrose.usdz@</object>
+        prepend references = @Stock/Philodendron-gloriosum_Full.usdz@</object>
     )
     {
-        float3 xformOp:translate = (0, -0.14125489, 0)
+        float3 xformOp:translate = (0.038833648, -0.30708444, 0.06011349)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
     }
 }
 

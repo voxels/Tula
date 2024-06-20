@@ -10,13 +10,18 @@
 
 def Xform "Root"
 {
-    def "Cereus_forbesii_spiralis_Full" (
+    def "Lophocereus_schotii_monstrose" (
         active = true
-        prepend references = @Stock/Cereus-forbesii-spiralis-Full.usdz@</object>
+        prepend references = @Stock/Lophocereus_schotii_monstrose.usdz@</object>
     )
     {
-        float3 xformOp:translate = (0, -0.8608582, 0)
+        float3 xformOp:translate = (0, -0.14125489, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
     }
 }
 

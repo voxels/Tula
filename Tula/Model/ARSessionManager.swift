@@ -5,14 +5,29 @@
 //  Created by Michael A Edgcumbe on 2/9/24.
 //
 
+struct PlacementDragState {
+    var draggedObject: PlaceableObject
+    var initialPosition: SIMD3<Float>
+    var position: SIMD3<Float>
+
+    @MainActor
+    init(objectToDrag: PlaceableObject, initialPosition:SIMD3<Float>, position:SIMD3<Float> = .zero) {
+        self.draggedObject = objectToDrag
+        self.initialPosition = initialPosition
+        self.position = position
+    }
+}
+
 struct DragState {
     var draggedObject: PlacedObject
     var initialPosition: SIMD3<Float>
+    var initialOrientation:simd_quatf
     
     @MainActor
     init(objectToDrag: PlacedObject) {
         draggedObject = objectToDrag
         initialPosition = objectToDrag.position
+        initialOrientation = objectToDrag.orientation
     }
 }
 
@@ -27,6 +42,7 @@ import SwiftUI
 final class ARSessionManager {
     private let worldTracking = WorldTrackingProvider()
     private let planeDetection = PlaneDetectionProvider()
+    private let handTracking = HandTrackingProvider()
     
     private var planeAnchorHandler: PlaneAnchorHandler
     private var persistenceManager: PersistenceManager
@@ -36,6 +52,8 @@ final class ARSessionManager {
             persistenceManager.placeableObjectsByFileName = appState?.placeableObjectsByFileName ?? [:]
         }
     }
+    
+    public var placementDrag:PlacementDragState? = nil
 
     private var currentDrag: DragState? = nil {
         didSet {
@@ -48,6 +66,7 @@ final class ARSessionManager {
     var rootEntity: Entity
     
     private let deviceLocation: Entity
+    private let handLocation: Entity
     private let raycastOrigin: Entity
     private let placementLocation: Entity
     private weak var placementTooltip: Entity? = nil
@@ -66,10 +85,11 @@ final class ARSessionManager {
         rootEntity = root
         placementLocation = Entity()
         deviceLocation = Entity()
+        handLocation = Entity()
         raycastOrigin = Entity()
         
         planeAnchorHandler = PlaneAnchorHandler(rootEntity: root)
-        persistenceManager = PersistenceManager(worldTracking: worldTracking, rootEntity: root)
+        persistenceManager = PersistenceManager(handTracking: handTracking, worldTracking: worldTracking, rootEntity: root)
         persistenceManager.loadPersistedObjects()
         
         rootEntity.addChild(placementLocation)
@@ -105,7 +125,7 @@ final class ARSessionManager {
     func runARKitSession() async {
         do {
             // Run a new set of providers every time when entering the immersive space.
-            try await appState?.arkitSession.run([worldTracking, planeDetection])
+            try await appState?.arkitSession.run([worldTracking, handTracking, planeDetection])
         } catch {
             // No need to handle the error here; the app is already monitoring the
             // session for error.
@@ -181,9 +201,15 @@ final class ARSessionManager {
         
         guard let deviceAnchor, deviceAnchor.isTracked else { return }
         
-        await updateUserFacingUIOrientations(deviceAnchor)
-        await checkWhichObjectDeviceIsPointingAt(deviceAnchor)
-        await updatePlacementLocation(deviceAnchor)
+        guard let handAnchor = handTracking.latestAnchors.rightHand, handAnchor.isTracked else {
+            return
+        }
+        
+        let rightHandAnchorTransform = handAnchor.originFromAnchorTransform
+        
+//        await updateUserFacingUIOrientations(deviceAnchor)
+//        await checkWhichObjectDeviceIsPointingAt(deviceAnchor)
+        await updatePlacementLocation(deviceAnchor, offsetsTransform: rightHandAnchorTransform )
     }
     
     @MainActor
@@ -205,50 +231,10 @@ final class ARSessionManager {
     }
     
     @MainActor
-    private func updatePlacementLocation(_ deviceAnchor: DeviceAnchor) async {
-        deviceLocation.transform = Transform(matrix: deviceAnchor.originFromAnchorTransform)
-        let originFromUprightDeviceAnchorTransform = deviceAnchor.originFromAnchorTransform.gravityAligned
-        
-        // Determine a placement location on planes in front of the device by casting a ray.
-        
-        // Cast the ray from the device origin.
-        let origin: SIMD3<Float> = raycastOrigin.transformMatrix(relativeTo: nil).translation
-    
-        // Cast the ray along the negative z-axis of the device anchor, but with a slight downward angle.
-        // (The downward angle is configurable using the `raycastOrigin` orientation.)
-        let direction: SIMD3<Float> = -raycastOrigin.transformMatrix(relativeTo: nil).zAxis
-        
-        // Only consider raycast results that are within 0.2 to 3 meters from the device.
-        let minDistance: Float = 0.2
-        let maxDistance: Float = 3
-        
-        // Only raycast against horizontal planes.
-        let collisionMask = PlaneAnchor.allPlanesCollisionGroup
-
-        var originFromPointOnPlaneTransform: float4x4? = nil
-        if let result = rootEntity.scene?.raycast(origin: origin, direction: direction, length: maxDistance, query: .nearest, mask: collisionMask)
-                                                  .first, result.distance > minDistance {
-            if result.entity.components[CollisionComponent.self]?.filter.group != PlaneAnchor.verticalCollisionGroup {
-                // If the raycast hit a horizontal plane, use that result with a small, fixed offset.
-                originFromPointOnPlaneTransform = originFromUprightDeviceAnchorTransform
-                originFromPointOnPlaneTransform?.translation = result.position + [0.0, ARSessionManager.placedObjectsOffsetOnPlanes, 0.0]
-            }
-        }
-        
-        if let originFromPointOnPlaneTransform {
-            placementLocation.transform = Transform(matrix: originFromPointOnPlaneTransform)
-            placementState.planeToProjectOnFound = true
-        } else {
-            // If no placement location can be determined, position the preview 50 centimeters in front of the device.
-            let distanceFromDeviceAnchor: Float = 0.5
-            let downwardsOffset: Float = 0.3
-            var uprightDeviceAnchorFromOffsetTransform = matrix_identity_float4x4
-            uprightDeviceAnchorFromOffsetTransform.translation = [0, -downwardsOffset, -distanceFromDeviceAnchor]
-            let originFromOffsetTransform = originFromUprightDeviceAnchorTransform * uprightDeviceAnchorFromOffsetTransform
-            
-            placementLocation.transform = Transform(matrix: originFromOffsetTransform)
-            placementState.planeToProjectOnFound = false
-        }
+    private func updatePlacementLocation(_ deviceAnchor: DeviceAnchor, offsetsTransform:simd_float4x4) async {
+        let translation = Transform(translation: SIMD3<Float>(-0.5,0,0))
+        placementLocation.transform = Transform(matrix: offsetsTransform.gravityAligned * translation.matrix )
+        placementState.planeToProjectOnFound = false
     }
     
     @MainActor
@@ -308,9 +294,11 @@ final class ARSessionManager {
     @MainActor
     func placeSelectedObject() {
         // Ensure there’s a placeable object.
-        guard let objectToPlace = placementState.objectToPlace else { return }
+        guard let objectToPlace = placementState.objectToPlace else { 
+            return
+        }
 
-        let object = objectToPlace.materialize()
+        let object = objectToPlace.materialize(translation: objectToPlace.originTranslation)
         object.position = placementLocation.position
         object.orientation = placementLocation.orientation
         
@@ -336,6 +324,32 @@ final class ARSessionManager {
         await run(function: persistenceManager.checkIfMovingObjectsCanBeAnchored, withFrequency: 2)
     }
     
+    @MainActor 
+    func updateRotation(value:EntityTargetValue<RotateGesture3D.Value>) {
+        if let currentDrag, currentDrag.draggedObject !== value.entity {
+            // Make sure any previous drag ends before starting a new one.
+            print("A new drag started but the previous one never ended - ending that one now.")
+            endDrag()
+        }
+        
+        // At the start of the drag gesture, remember which object is being manipulated.
+        if currentDrag == nil {
+            guard let object = persistenceManager.object(for: value.entity) else {
+                print("Unable to start drag - failed to identify the dragged object.")
+                return
+            }
+            
+            object.isBeingDragged = true
+            currentDrag = DragState(objectToDrag: object)
+            placementState.userDraggedAnObject = true
+        }
+        
+        // Update the dragged object’s position.
+        if let currentDrag {
+            currentDrag.draggedObject.orientation = currentDrag.initialOrientation.normalized * simd_quatf(real: Float(value.gestureValue.rotation.quaternion.real), imag: SIMD3<Float>(Float(value.gestureValue.rotation.quaternion.imag.x), Float(value.gestureValue.rotation.quaternion.imag.y), Float(value.gestureValue.rotation.quaternion.imag.z)))
+        }
+    }
+    
     @MainActor
     func updateDrag(value: EntityTargetValue<DragGesture.Value>) {
         if let currentDrag, currentDrag.draggedObject !== value.entity {
@@ -359,14 +373,13 @@ final class ARSessionManager {
         // Update the dragged object’s position.
         if let currentDrag {
             currentDrag.draggedObject.position = currentDrag.initialPosition + value.convert(value.translation3D, from: .local, to: rootEntity)
-
-            // If possible, snap the dragged object to a nearby horizontal plane.
-            let maxDistance = ARSessionManager.snapToPlaneDistanceForDraggedObjects
-            if let projectedTransform = PlaneProjector.project(point: currentDrag.draggedObject.transform.matrix,
-                                                               ontoHorizontalPlaneIn: planeAnchorHandler.planeAnchors,
-                                                               withMaxDistance: maxDistance) {
-                currentDrag.draggedObject.position = projectedTransform.translation
-            }
+//            // If possible, snap the dragged object to a nearby horizontal plane.
+//            let maxDistance = ARSessionManager.snapToPlaneDistanceForDraggedObjects
+//            if let projectedTransform = PlaneProjector.project(point: currentDrag.draggedObject.transform.matrix,
+//                                                               ontoHorizontalPlaneIn: planeAnchorHandler.planeAnchors,
+//                                                               withMaxDistance: maxDistance) {
+//                currentDrag.draggedObject.position = projectedTransform.translation
+//            }
         }
     }
     

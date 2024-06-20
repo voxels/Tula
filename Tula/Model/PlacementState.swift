@@ -29,6 +29,6 @@ class PlacementState {
     }
 
     var isPlacementPossible: Bool {
-        return selectedObject != nil && shouldShowPreview && planeToProjectOnFound && !collisionDetected && !dragInProgress
+        return selectedObject != nil && shouldShowPreview && !collisionDetected && !dragInProgress
     }
 }

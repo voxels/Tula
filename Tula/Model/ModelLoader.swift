@@ -49,7 +49,6 @@ final public class ModelLoader {
                 let floorPotModelName = usdz.usdzFullSizeModelName
                 group.addTask {
                     await self.loadObject(flowerFileName, displayName: usdz.title)
-                    await self.loadObject(floorPotModelName, displayName: usdz.title)
                     await self.updateProgress()
                 }
             }
@@ -65,13 +64,14 @@ final public class ModelLoader {
             
             try await sceneEntity = Entity(named: fileName, in:realityKitContentBundle)
             
-            guard let fileNamePrefix = fileName.components(separatedBy: "_").first else {
-                return
+            var mEntity:ModelEntity? = sceneEntity.findEntity(named: "mesh_0") as? ModelEntity
+            if mEntity == nil {
+                mEntity = sceneEntity.findEntity(named: "node_0") as? ModelEntity
             }
-
-            let mEntity = sceneEntity.findEntity(named: fileNamePrefix)
-            
-            guard let castEntity = mEntity as? ModelEntity else {
+ 
+            guard let castEntity = mEntity else {
+                print("Did not find model entity for \(displayName)")
+                print(sceneEntity.children)
                 return
             }
             modelEntity = castEntity
@@ -80,7 +80,12 @@ final public class ModelLoader {
             previewEntity = sceneEntity.clone(recursive: true)
             previewEntity.name = "Preview of \(modelEntity.name)"
             
-            let shape = try await ShapeResource.generateConvex(from: modelEntity.model!.mesh)
+            var shape = try await ShapeResource.generateConvex(from: modelEntity.model!.mesh)
+            var originTranslation = SIMD3<Float>.zero
+            if modelEntity.parent?.transform.translation != SIMD3<Float>.zero {
+                originTranslation = modelEntity.parent!.transform.translation
+                shape = shape.offsetBy(translation: modelEntity.parent!.transform.translation)
+            }
             previewEntity.components.set(CollisionComponent(shapes: [shape], isStatic: false,
                                                             filter: CollisionFilter(group: PlaceableObject.previewCollisionGroup, mask: .all)))
 
@@ -99,7 +104,7 @@ final public class ModelLoader {
             modelEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: modelEntity))
         
             let descriptor = ModelDescriptor(fileName: fileName, displayName: displayName)
-            placeableObjects.append(PlaceableObject(descriptor: descriptor, renderContent: modelEntity, previewEntity: previewEntity))
+            placeableObjects.append(PlaceableObject(descriptor: descriptor, renderContent: modelEntity, previewEntity: previewEntity, originTranslation: originTranslation))
         } catch {
             print("Failed to load model \(fileName)")
         }

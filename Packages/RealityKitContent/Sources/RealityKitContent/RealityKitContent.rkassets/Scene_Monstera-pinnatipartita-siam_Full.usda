@@ -10,13 +10,18 @@
 
 def Xform "Root"
 {
-    def "Euphorbia_abdelkuri_Silver_Full" (
+    def "Monstera_pinnatipartita_siam_Full" (
         active = true
-        prepend references = @Stock/Euphorbia-abdelkuri-Silver-Full.usdz@</object>
+        prepend references = @Stock/Monstera-pinnatipartita-siam_Full.usdz@</object>
     )
     {
-        float3 xformOp:translate = (0, -0.8760646, 0)
+        float3 xformOp:translate = (-0.017600283, -1.0741056, 0.05959153)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
     }
 }
 

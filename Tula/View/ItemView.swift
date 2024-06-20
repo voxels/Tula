@@ -217,6 +217,8 @@ struct ItemView: View {
                                     let entity = try await Entity(named: content.usdzModelName, in:realityKitContentBundle)
                                     entity.position = SIMD3(0, -0.125, 0.20)
                                     entity.setScale(SIMD3(0.75,0.75,0.75), relativeTo: nil)
+                                    entity.generateCollisionShapes(recursive: true)
+                                    entity.components.set(InputTargetComponent())
                                     scene.add(entity)
                                     
                                     guard let env = try? await EnvironmentResource(named: "ImageBasedLight")
@@ -232,6 +234,9 @@ struct ItemView: View {
                                     print(error)
                                 }
                             }
+                            .gesture(SpatialTapGesture(count:1).targetedToAnyEntity().onEnded({ _ in
+                                appState.showImmersiveSpace = true
+                            }))
                             .frame(width: geo.size.width / 3 - 48, height:geo.size.height/2)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 120, trailing: 0))
                             .onChange(of: appState.displayLinkTimestamp) { oldValue, newValue in
@@ -240,13 +245,15 @@ struct ItemView: View {
                                     countFrames += 0.25
                                 }
                             }
+
                             Button {
-                                switch content.usdzFullSizeModelName {
-                                default:
-                                    openWindow(id:"VolumeSmallView")
-                                }
+                                appState.showImmersiveSpace.toggle()
                             } label: {
-                                Label("Place in your space", systemImage: "cube")
+                                if !appState.showImmersiveSpace {
+                                    Label("Place in your space", systemImage: "cube")
+                                } else {
+                                    Label("Close immersive space", systemImage: "cube")
+                                }
                             }.padding(.bottom, 16)
                             Button {
                                 showVideo.toggle()

@@ -10,14 +10,19 @@
 
 def Xform "Root"
 {
-    def "green" (
+    def "begonia" (
         active = true
-        prepend references = @green.usdz@
+        prepend references = @begonia.usdz@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.028612152, 0.13683775, 0.012170672)
+        float3 xformOp:translate = (0.0071023256, -0.26404944, 0.028393507)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
     }
 }
 

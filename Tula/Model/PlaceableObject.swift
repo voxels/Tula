@@ -30,30 +30,32 @@ private enum PreviewMaterials {
 public class PlaceableObject {
     let descriptor: ModelDescriptor
     var previewEntity: Entity
-    private var renderContent: ModelEntity
+    var renderContent: ModelEntity
+    public var originTranslation:SIMD3<Float>
     
     static let previewCollisionGroup = CollisionGroup(rawValue: 1 << 15)
     
-    init(descriptor: ModelDescriptor, renderContent: ModelEntity, previewEntity: Entity) {
+    init(descriptor: ModelDescriptor, renderContent: ModelEntity, previewEntity: Entity, originTranslation:SIMD3<Float>) {
         self.descriptor = descriptor
         self.previewEntity = previewEntity
-        self.previewEntity.applyMaterial(PreviewMaterials.active)
+//        self.previewEntity.applyMaterial(PreviewMaterials.active)
         self.renderContent = renderContent
+        self.originTranslation = originTranslation
     }
 
     var isPreviewActive: Bool = true {
         didSet {
             if oldValue != isPreviewActive {
-                previewEntity.applyMaterial(isPreviewActive ? PreviewMaterials.active : PreviewMaterials.inactive)
+//                previewEntity.applyMaterial(isPreviewActive ? PreviewMaterials.active : PreviewMaterials.inactive)
                 // Only act as input target while active to prevent intercepting drag gestures from intersecting placed objects.
                 previewEntity.components[InputTargetComponent.self]?.allowedInputTypes = isPreviewActive ? .indirect : []
             }
         }
     }
 
-    func materialize() -> PlacedObject {
+    func materialize(translation:SIMD3<Float>) -> PlacedObject {
         let shapes = previewEntity.components[CollisionComponent.self]!.shapes
-        return PlacedObject(descriptor: descriptor, renderContentToClone: renderContent, shapes: shapes)
+        return PlacedObject(descriptor: descriptor, renderContentToClone: renderContent, shapes: shapes, translation: translation)
     }
 
     func matchesCollisionEvent(event: CollisionEvents.Began) -> Bool {
@@ -102,9 +104,10 @@ class PlacedObject: Entity {
     
     var atRest = false
 
-    init(descriptor: ModelDescriptor, renderContentToClone: ModelEntity, shapes: [ShapeResource]) {
+    init(descriptor: ModelDescriptor, renderContentToClone: ModelEntity, shapes: [ShapeResource], translation:SIMD3<Float>) {
         fileName = descriptor.fileName
         renderContent = renderContentToClone.clone(recursive: true)
+        renderContent.transform.translation = translation
         super.init()
         name = renderContent.name
         

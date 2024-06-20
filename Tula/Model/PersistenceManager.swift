@@ -11,7 +11,8 @@ import RealityKit
 
 class PersistenceManager {
     private var worldTracking: WorldTrackingProvider
-    
+    private var handTracking: HandTrackingProvider
+
     // A map of world anchor UUIDs to the objects attached to them.
     private var anchoredObjects: [UUID: PlacedObject] = [:]
     
@@ -36,7 +37,8 @@ class PersistenceManager {
     
     private var rootEntity: Entity
     
-    init(worldTracking: WorldTrackingProvider, rootEntity: Entity) {
+    init(handTracking:HandTrackingProvider, worldTracking: WorldTrackingProvider, rootEntity: Entity) {
+        self.handTracking = handTracking
         self.worldTracking = worldTracking
         self.rootEntity = rootEntity
     }
@@ -89,7 +91,7 @@ class PersistenceManager {
             return
         }
 
-        let object = placeableObject.materialize()
+        let object = placeableObject.materialize(translation: placeableObject.originTranslation)
         object.position = anchor.originFromAnchorTransform.translation
         object.orientation = anchor.originFromAnchorTransform.rotation
         object.isEnabled = anchor.isTracked
