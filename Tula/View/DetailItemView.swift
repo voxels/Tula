@@ -8,44 +8,75 @@
 import SwiftUI
 
 struct DetailItemView: View {
-    let appState: TulaAppModel
-    public let modelContent:[ModelViewContent]
+    @Binding public var appState: TulaAppModel
+    @Binding public var shopifyModel:ShopifyModel
+    @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
-    @State private var currentIndex = 0
+    @Binding public var playerModel:PlayerModel
+    @Binding public var currentIndex:Int
+    @Binding public var showItemView:Bool
     @State private var showVideo = false
     var body: some View {
         GeometryReader(content: { geo in
             VStack{
                 Spacer()
-                
                 ScrollViewReader(content: { scrollViewProxy in
                     ScrollView(.horizontal) {
                         LazyHStack(spacing: 0, content: {
                             let countObjects = modelContent.count
                             ForEach(0..<countObjects, id: \.self) { index in
-                                ItemView(appState: appState, content: modelContent[index], showVideo: $showVideo)
+                                ItemView(appState: $appState, shopifyModel: $shopifyModel, content: $modelContent[index], playerModel: $playerModel, showVideo: $showVideo)
                                     .frame(width: geo.size.width, height:geo.size.height - 48)
                                     .id(index)
                                     .padding(0)
                             }
                         }).scrollTargetLayout()
                             .onChange(of: currentIndex) { oldValue, newValue in
-                                withAnimation {
+                                if abs(newValue - oldValue) > 1 {
                                     scrollViewProxy.scrollTo(newValue, anchor: .center)
                                     guard currentIndex < modelContent.count else {
                                         content = modelContent[modelContent.count - 1]
                                         return
                                     }
                                     content = modelContent[currentIndex]
+                                } else {
+                                    withAnimation {
+                                        scrollViewProxy.scrollTo(newValue, anchor: .center)
+                                        guard currentIndex < modelContent.count else {
+                                            content = modelContent[modelContent.count - 1]
+                                            return
+                                        }
+                                        content = modelContent[currentIndex]
+                                    }
+                                }
+                            }
+                            .onChange(of: content) { oldValue, newValue in
+                                withAnimation {
+                                    if let content = content {
+                                        let newIndex = modelContent.firstIndex(of: content) ?? 0
+                                        guard newIndex < modelContent.count else {
+                                            return
+                                        }
+                                        if currentIndex != newIndex {
+                                            scrollViewProxy.scrollTo(currentIndex, anchor: .center)
+                                            self.content = modelContent[currentIndex]
+                                        }
+                                    }
+                                }
+                            }.onChange(of:showVideo) { oldValue, newValue in
+                                if newValue {
+                                    Task { @MainActor in
+                                        playerModel.loadVideo(URL(string:content!.videoURLString!)!,presentation: .inline)
+                                    }
                                 }
                             }
                             .onAppear {
-                                if let content = content {
-                                    currentIndex = modelContent.firstIndex(of: content) ?? 0
-                                }
-                                
                                 scrollViewProxy.scrollTo(currentIndex, anchor: .center)
-                                content = modelContent[currentIndex]
+                                guard currentIndex < modelContent.count else {
+                                    content = modelContent[modelContent.count - 1]
+                                    return
+                                }
+                                self.content = modelContent[currentIndex]
                             }
                         
                     }
@@ -55,52 +86,72 @@ struct DetailItemView: View {
                 })
             }
             .overlay {
-                if showVideo {
-                    EmptyView()
-//                    VStack{
-//                        HStack {
-//                            Button {
-//                                
-//                                showVideo.toggle()
-//                            } label: {
-//                                Label("previous", systemImage: "chevron.left")
-//                            }
-//                            .labelStyle(.iconOnly)
-//                            .padding(24)
-//                            Spacer()
-//                        }
-//                        Spacer()
-//                    }
-
-                } else {
-                    VStack{
-                        HStack {                            
-                            if currentIndex > 0{
-                                Button {
-                                    scroll(to: currentIndex - 1)
-                                } label: {
-                                    Label("previous", systemImage: "chevron.left")
-                                }
-                                .labelStyle(.iconOnly)
-                                .padding(24)
-                            }
-                            Spacer()
+                VStack{
+                    HStack {
+                        
+                        if currentIndex > 0 {
                             
-                            if currentIndex < modelContent.count - 1{
-                                Button {
-                                    scroll(to: currentIndex + 1)
-                                } label: {
-                                    Label("next", systemImage: "chevron.right")
-                                }
-                                .labelStyle(.iconOnly)
-                                .padding(24)
+                            Button {
+                                scroll(to: currentIndex - 1)
+                            } label: {
+                                Label("previous", systemImage: "chevron.left")
                             }
+                            .labelStyle(.iconOnly)
+                            .padding(.leading, 24)
+                        } else {
+                            Button {
+                                scroll(to: modelContent.count - 1)
+                            } label: {
+                                Label("previous", systemImage: "chevron.left")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(.leading, 24)
                         }
+                        
+                        Button {
+                            content = nil
+                            showItemView = false
+                        } label: {
+                            Label("Gallery", systemImage: "chevron.left")
+                        }
+                        .labelStyle(.titleOnly)
+                        .padding(.horizontal, 8)
+                        
                         Spacer()
+                        
+                        Image("Tula-House-Logo-White")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight:60)
+                        
+                        Spacer()
+                        
+                        if currentIndex < modelContent.count - 1{
+                            Button {
+                                scroll(to: currentIndex + 1)
+                            } label: {
+                                Label("next", systemImage: "chevron.right")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(24)
+                        } else {
+                            Button {
+                                scroll(to: 0)
+                            } label: {
+                                Label("next", systemImage: "chevron.right")
+                            }
+                            .labelStyle(.iconOnly)
+                            .padding(24)
+                        }
                     }
+                    Spacer()
                 }
             }
         })
+        .popover(isPresented: $showVideo) {
+            PlayerViewController(model: $playerModel)
+                .interactiveDismissDisabled(!playerModel.isPlaybackComplete)
+        }
     }
     
     private func scroll(to index: Int) {
@@ -109,7 +160,7 @@ struct DetailItemView: View {
 }
 
 #Preview {
-    DetailItemView(appState: TulaAppModel(), modelContent: TulaApp.defaultContent, content:.constant( TulaApp.defaultContent.first!))
+    DetailItemView(appState: .constant(TulaAppModel()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( TulaApp.defaultContent.first!), playerModel: .constant(PlayerModel()), currentIndex: .constant(0), showItemView: .constant(true))
 }
 
 extension Comparable {

@@ -11,7 +11,7 @@ import PassKit
 struct PaymentButton: View {
     var body: some View {
         Button(action: {
-            /* Your custom payment code here */
+
         }, label: {
             
             Label("Checkout", systemImage: "cart")

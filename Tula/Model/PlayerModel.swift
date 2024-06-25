@@ -2,8 +2,6 @@
 //  PlayerModel.swift
 //  Tula
 //
-//  Created by Michael A Edgcumbe on 2/22/24.
-//
 
 import AVKit
 import GroupActivities
@@ -11,15 +9,14 @@ import Combine
 import Observation
 
 /// The presentation modes the player supports.
-enum Presentation {
+public enum Presentation {
     /// Indicates to present the player as a child of a parent user interface.
     case inline
     /// Indicates to present the player in full-window exclusive mode.
     case fullWindow
 }
 
-@MainActor
-@Observable class PlayerModel {
+@Observable public class PlayerModel {
     
     /// A Boolean value that indicates whether playback is currently active.
     private(set) var isPlaying = false
@@ -37,7 +34,7 @@ enum Presentation {
     private(set) var shouldProposeNextVideo = false
     
     /// An object that manages the playback of a video's media.
-    private var player = AVPlayer()
+    public var player = AVPlayer()
     
     /// The currently presented player view controller.
     ///
@@ -48,24 +45,21 @@ enum Presentation {
     /// is an environment-scoped object).
     ///
     /// This value is set by a call to the `makePlayerViewController()` method.
-    private var playerViewController: AVPlayerViewController? = nil
-    private var playerViewControllerDelegate: AVPlayerViewControllerDelegate? = nil
+    public var playerViewController: AVPlayerViewController? = nil
+    public var playerViewControllerDelegate: AVPlayerViewControllerDelegate? = nil
     
     private(set) var shouldAutoPlay = true
     
-//    // An object that manages the app's SharePlay implementation.
-//    private var coordinator: VideoWatchingCoordinator! = nil
     
     /// A token for periodic observation of the player's time.
     private var timeObserver: Any? = nil
-    private var subscriptions = Set<AnyCancellable>()
+    public var subscriptions = Set<AnyCancellable>()
     
     init() {
-//        coordinator = VideoWatchingCoordinator(playbackCoordinator: player.playbackCoordinator)
         observePlayback()
         Task {
             await configureAudioSession()
-            //await observeSharedVideo()
+            //            await observeSharedVideo()
         }
     }
     
@@ -76,7 +70,7 @@ enum Presentation {
         let controller = AVPlayerViewController()
         controller.player = player
         controller.delegate = delegate
-
+        
         // Set the model state
         playerViewController = controller
         playerViewControllerDelegate = delegate
@@ -114,12 +108,12 @@ enum Presentation {
             .sink { [weak self] notification in
                 
                 // Wrap the notification in helper type that extracts the interruption type and options.
-//                guard let result = InterruptionResult(notification) else { return }
+                //                guard let result = InterruptionResult(notification) else { return }
                 
-//                // Resume playback, if appropriate.
-//                if result.type == .ended && result.options == .shouldResume {
-                    self?.player.play()
-//                }
+                // Resume playback, if appropriate.
+                //                if notification.type == .ended && result.options == .shouldResume {
+                self?.player.play()
+                //                }
             }.store(in: &subscriptions)
         
         // Add an observer of the player object's current time. The app observes
@@ -136,38 +130,39 @@ enum Presentation {
             // to reduce the audio's dynamic range to help normalize audio levels.
             try session.setCategory(.playback, mode: .moviePlayback)
         } catch {
-            print("Unable to configure audio session: \(error.localizedDescription)")
+            print(error)
+            //            logger.error("Unable to configure audio session: \(error.localizedDescription)")
         }
     }
-
+    
     /// Monitors the coordinator's `sharedVideo` property.
     ///
     /// If this value changes due to a remote participant sharing a new activity, load and present the new video.
-    /*
     private func observeSharedVideo() async {
-        let current = currentItem
-        await coordinator.$sharedVideo
-            .receive(on: DispatchQueue.main)
-            // Only observe non-nil values.
-            .compactMap { $0 }
-            // Only observe updates set by a remote participant.
-            .filter { $0 != current }
-            .sink { [weak self] video in
-                guard let self else { return }
-                // Load the video for full-window presentation.
-                loadVideo(video, presentation: .fullWindow)
-            }
-            .store(in: &subscriptions)
+        /*let current = currentItem
+         await coordinator.$sharedVideo
+         .receive(on: DispatchQueue.main)
+         // Only observe non-nil values.
+         .compactMap { $0 }
+         // Only observe updates set by a remote participant.
+         .filter { $0 != current }
+         .sink { [weak self] video in
+         guard let self else { return }
+         // Load the video for full-window presentation.
+         loadVideo(video, presentation: .fullWindow)
+         }
+         .store(in: &subscriptions)
+         */
     }
-     
-     */
     
     /// Loads a video for playback in the requested presentation.
     /// - Parameters:
     ///   - video: The video to load for playback.
     ///   - presentation: The style in which to present the player.
     ///   - autoplay: A Boolean value that indicates whether to auto play that the content when presented.
-    func loadVideo(_ video: URL, presentation: Presentation = .inline, autoplay: Bool = true) async throws {
+    ///
+    @MainActor
+    func loadVideo(_ video: URL, presentation: Presentation = .inline, autoplay: Bool = true) {
         // Update the model state for the request.
         currentItem = video
         shouldAutoPlay = autoplay
@@ -179,41 +174,29 @@ enum Presentation {
                 // Attempt to SharePlay this video if a FaceTime call is active.
                 //await coordinator.coordinatePlayback(of: video)
                 // After preparing for coordination, load the video into the player and present it.
-                try await replaceCurrentItem(with: video)
+                replaceCurrentItem(with: video)
             }
         case .inline:
             // Don't SharePlay the video the when playing it from the inline player,
             // load the video into the player and present it.
-            try await replaceCurrentItem(with: video)
+            replaceCurrentItem(with: video)
         }
-
+        
         // In visionOS, configure the spatial experience for either .inline or .fullWindow playback.
         configureAudioExperience(for: presentation)
-
+        
         // Set the presentation, which typically presents the player full window.
         self.presentation = presentation
-        
-        if autoplay {
-            Task { @MainActor in
-                play()
-            }
-        }
-   }
+    }
     
-    @MainActor
-    private func replaceCurrentItem(with video: URL) async throws {
+    private func replaceCurrentItem(with video: URL) {
         // Create a new player item and set it as the player's current item.
         let playerItem = AVPlayerItem(url: video)
         // Set external metadata on the player item for the current video.
-        playerItem.externalMetadata = try await createMetadataItems(for: playerItem.asset)
+        playerItem.externalMetadata = createMetadataItems(for: video)
         // Set the new player item as current, and begin loading its data.
         player.replaceCurrentItem(with: playerItem)
         print("🍿 \(video.absoluteString) enqueued for playback.")
-    }
-    
-    func stop() {
-        player.pause()
-        reset()
     }
     
     /// Clears any loaded media and resets the player model to its default state.
@@ -231,11 +214,18 @@ enum Presentation {
     /// Creates metadata items from the video items data.
     /// - Parameter video: the video to create metadata for.
     /// - Returns: An array of `AVMetadataItem` to set on a player item.
-    
-
-    private func createMetadataItems(for video: AVAsset) async throws -> [AVMetadataItem] {
-        return try await video.load(.metadata)
+    private func createMetadataItems(for video: URL) -> [AVMetadataItem] {
+        let mapping: [AVMetadataIdentifier: Any] = [
+            //            .commonIdentifierTitle: video.title,
+            //            .commonIdentifierArtwork: video.imageData,
+            //            .commonIdentifierDescription: video.description,
+            //            .commonIdentifierCreationDate: video.info.releaseDate,
+            //            .iTunesMetadataContentRating: video.info.contentRating,
+            //            .quickTimeMetadataGenre: video.info.genres
+            :]
+        return mapping.compactMap { createMetadataItem(for: $0, value: $1) }
     }
+    
     /// Creates a metadata item for a the specified identifier and value.
     /// - Parameters:
     ///   - identifier: an identifier for the item.
@@ -254,7 +244,7 @@ enum Presentation {
     /// Configures the user's intended spatial audio experience to best fit the presentation.
     /// - Parameter presentation: the requested player presentation.
     private func configureAudioExperience(for presentation: Presentation) {
-        #if os(visionOS)
+#if os(visionOS)
         do {
             let experience: AVAudioSessionSpatialExperience
             switch presentation {
@@ -269,11 +259,10 @@ enum Presentation {
         } catch {
             print("Unable to set the intended spatial experience. \(error.localizedDescription)")
         }
-        #endif
+#endif
     }
-
-    // MARK: - Transport Control
     
+    // MARK: - Transport Control
     
     func play() {
         player.play()
@@ -291,9 +280,11 @@ enum Presentation {
     private func addTimeObserver() {
         removeTimeObserver()
         // Observe the player's timing every 1 second
-        let timeInterval = CMTime(value: 1, timescale: 1)
-//        timeObserver = player.addPeriodicTimeObserver(forInterval: timeInterval, queue: .main) { [weak self] time in
-//        }
+        //let timeInterval = CMTime(value: 1, timescale: 1)
+        //        timeObserver = player.addPeriodicTimeObserver(forInterval: timeInterval, queue: .main) { [weak self] time in
+        //            guard let self = self, let duration = player.currentItem?.duration else { return }
+        // Propose playing the next episode within 10 seconds of the end of the current episode.
+        //}
     }
     
     private func removeTimeObserver() {
@@ -301,26 +292,26 @@ enum Presentation {
         player.removeTimeObserver(timeObserver)
         self.timeObserver = nil
     }
+}
+
+/// A coordinator that acts as the player view controller's delegate object.
+public class PlayerViewControllerDelegate: NSObject, AVPlayerViewControllerDelegate {
     
-    /// A coordinator that acts as the player view controller's delegate object.
-    final class PlayerViewControllerDelegate: NSObject, AVPlayerViewControllerDelegate {
-        
-        let player: PlayerModel
-        
-        init(player: PlayerModel) {
-            self.player = player
-        }
-        
-        #if os(visionOS)
-        // The app adopts this method to reset the state of the player model when a user
-        // taps the back button in the visionOS player UI.
-        func playerViewController(_ playerViewController: AVPlayerViewController,
-                                  willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-            Task { @MainActor in
-                // Calling reset dismisses the full-window player.
-                player.reset()
-            }
-        }
-        #endif
+    let player: PlayerModel
+    
+    init(player: PlayerModel) {
+        self.player = player
     }
+    
+#if os(visionOS)
+    // The app adopts this method to reset the state of the player model when a user
+    // taps the back button in the visionOS player UI.
+    public func playerViewController(_ playerViewController: AVPlayerViewController,
+                                     willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        Task { @MainActor in
+            // Calling reset dismisses the full-window player.
+            player.reset()
+        }
+    }
+#endif
 }

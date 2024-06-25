@@ -11,11 +11,14 @@ import RealityKitContent
 import PassKit
 
 public struct ContentView: View {
-    public let appState: TulaAppModel
-    public let modelLoader: ModelLoader
-    public let modelContent:[ModelViewContent]
+    @Binding public var appState: TulaAppModel
+    @Binding public var modelLoader: ModelLoader
+    @Binding public var shopifyModel:ShopifyModel
+    @Binding public var modelContent:[ModelViewContent]
+    @Binding public var playerModel:PlayerModel
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
+    @Binding public var currentIndex:Int
     @State private var showARSpace = false
     @State private var showApplePay = false
 
@@ -24,17 +27,7 @@ public struct ContentView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.scenePhase) private var scenePhase
     
-    public init(appState: TulaAppModel, modelLoader: ModelLoader, modelContent:[ModelViewContent], selectedModel:Binding<ModelViewContent?>, placementModel:Binding<ModelViewContent?>) {
-        
-        self.appState = appState
-        self.modelLoader = modelLoader
-        self.modelContent = modelContent
-        _selectedModel = selectedModel
-        _placementModel = placementModel
-    }
-    
     public var body: some View {
-
-        DetailView(appState: appState, modelContent:modelContent, content: $selectedModel, placementModel: $placementModel)
+        DetailView(appState: $appState, modelLoader: $modelLoader, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$selectedModel, playerModel: $playerModel, placementModel: $placementModel, currentIndex: $currentIndex)
     }
 }

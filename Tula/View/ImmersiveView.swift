@@ -11,9 +11,9 @@ import RealityKitContent
 
 @MainActor
 struct ImmersiveView: View {
-    var appState: TulaAppModel
-    let modelLoader: ModelLoader
-    let placementManager:ARSessionManager
+    @Binding public var appState: TulaAppModel
+    @Binding public var modelLoader: ModelLoader
+    @Binding public var placementManager:ARSessionManager
     @Binding public var selectedModel:ModelViewContent?
     @Binding public var placementModel:ModelViewContent?
     @State private var collisionBeganSubscription: EventSubscription? = nil
@@ -63,6 +63,10 @@ struct ImmersiveView: View {
         }
         .task {
             await placementManager.checkIfMovingObjectsCanBeAnchored()
+        }.task {
+            if let selectedModel = selectedModel {
+                appState.placementManager?.select(appState.placeableObjectsByFileName[selectedModel.usdzModelName])
+            }
         }
         .gesture(SpatialTapGesture().targetedToAnyEntity().onEnded { event in
             // Place the currently selected object when the user looks directly at the selected object’s preview.
@@ -84,6 +88,11 @@ struct ImmersiveView: View {
                 }
             }
         )
+        .gesture(RotateGesture3D(constrainedToAxis: .y, minimumAngleDelta: Angle(degrees: 1)).targetedToAnyEntity().onChanged({ value in
+            if value.entity.components[CollisionComponent.self]?.filter.group == PlacedObject.collisionGroup {
+                placementManager.updateRotation(value: value)
+            }
+        }))
         .onAppear(perform: {
             appState.immersiveSpaceOpened(with: placementManager)
         })
@@ -91,9 +100,10 @@ struct ImmersiveView: View {
             print("Leaving immersive space.")
             appState.didLeaveImmersiveSpace()
         }
+        
         .onChange(of: selectedModel) { oldValue, newValue in
             if let selectedModel = newValue {
-                appState.placementManager?.select(appState.placeableObjectsByFileName[selectedModel.flowerModelName])
+                appState.placementManager?.select(appState.placeableObjectsByFileName[selectedModel.usdzModelName])
             } else {
                 appState.placementManager?.select(nil)
             }

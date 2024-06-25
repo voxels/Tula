@@ -14,15 +14,14 @@ struct PlayerViewController: UIViewControllerRepresentable {
     @Binding public var model:PlayerModel
 
     func makeUIViewController(context: Context) -> AVPlayerViewController {
-        
         let controller = model.makePlayerViewController()
-        controller.showsPlaybackControls = true
         controller.videoGravity = .resizeAspect
+        controller.modalPresentationStyle = .automatic
         return controller
-        
     }
     
     func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
         
     }
 }
+

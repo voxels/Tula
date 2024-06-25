@@ -8,93 +8,56 @@
 import SwiftUI
 
 struct DetailView: View {
-    let appState: TulaAppModel
-    public let modelContent:[ModelViewContent]
+    @Binding public var appState: TulaAppModel
+    @Binding public var modelLoader: ModelLoader
+    @Binding public var shopifyModel:ShopifyModel
+    @Binding public var modelContent:[ModelViewContent]
     @Binding public var content:ModelViewContent?
-    
+    @Binding public var playerModel:PlayerModel
     @Binding public var placementModel:ModelViewContent?
+    @Binding public var currentIndex:Int
     @State private var showImmersiveTab = false
-    @State private var selectedTab = 1
+    @State private var selectedTab = 0
     var body: some View {
-        if content == nil {
-            TabView(selection: $selectedTab,
-                    content:  {
-                VStack{
-                    Image("Tula-House-Logo-White@4x")
-                        .resizable()
-                        .frame(width: 96, height: 60, alignment: .center)
-                        .padding(20)
+//        if shopifyModel.collectionResponses.count > 0 {
+//            let count:Int = shopifyModel.collectionResponses.count
+//            ForEach(0..<count, id:\.self) { index in
+//                let collectionResponse = shopifyModel.collectionResponses[index]
+//                let collectionTitle = collectionResponse.collection.title
+//                GalleryView(collectionID: collectionResponse.id, appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, playerModel: $playerModel, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+//                    .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+//                    .tabItem { Label(collectionTitle == "Products" ? "Toys" : collectionTitle, systemImage: systemImageName(for: collectionResponse))}
+//                    .tag(index)
+//            }
+//            if showImmersiveTab {
+//                ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)
+//            }
+//        } else {
+//        TabView {
+            GalleryView(collectionID: UUID(), appState:$appState, shopifyModel: $shopifyModel, modelContent: $modelContent, content:$content, playerModel: $playerModel, placementModel: $placementModel, showImmersiveTab: $showImmersiveTab, selectedTab: $selectedTab, currentIndex: $currentIndex)
+                .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+//                .tabItem { Label("Gallery", systemImage:"tree")}
+//                .tag(0)
+//            SafariWebView(url: URL(string:"https://tula.house")!)
+//                .frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
+//                .tabItem{Label("Cart", systemImage: "cart")}
+//                .tag(1)
+//        }.frame(minWidth:1400,maxWidth:1400, minHeight: 800, maxHeight:800)
 
-                    ScrollView(.horizontal) {
-                        LazyHStack{
-                            ForEach(modelContent) { content in
-                                VStack{
-                                    Image(content.image1URLString).resizable().aspectRatio(contentMode: .fill)
-                                        .frame(height:460)
-                                    ZStack{
-                                        Rectangle().foregroundStyle(.thinMaterial)
-                                        Text(content.title).multilineTextAlignment(.center)
-                                    }.frame(height:116)
-                                }
-                                .clipShape(
-                                    .rect(
-                                        topLeadingRadius: 32,
-                                        bottomLeadingRadius: 32,
-                                        bottomTrailingRadius: 32,
-                                        topTrailingRadius: 32
-                                    )
-                                ).onTapGesture {
-                                    self.content = content
-                                    
-                                }
-                                .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                                .hoverEffect(.automatic)
-                            }
-                        }
-                        
-                    }
-                    .scrollIndicators(.hidden)
-                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
-                }
-                .frame(minWidth:1280,maxWidth:1280)
-                .tabItem { Label("Plants", systemImage: "leaf")}
-                .tag(1)
-                DetailCartView()
-                    .tabItem { Label("Cart", systemImage: "cart") }
-                    .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-                    .tag(2)
-                if showImmersiveTab {
-                    ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Immersive", systemImage: "visionpro")  }.tag(3)
-                }
-            })
-            .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-            .onChange(of: selectedTab) { oldValue, newValue in
-                content = nil
-            }
-        } else  {
-            TabView(selection: $selectedTab,
-                    content:  {
-                DetailItemView(appState: appState, modelContent: modelContent, content: $content)
-                    .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-                    .tabItem { Label("Plants", systemImage: "leaf")}
-                    .tag(1)
-                DetailCartView().tabItem { Label("Cart", systemImage: "cart")  }
-                    .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-                    .tag(2)
-                if showImmersiveTab {
-                    ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel)
-                        .tabItem { Label("Immersive", systemImage: "visionpro")  }
-                        .tag(3)
-                }
-            })
-            .frame(minWidth:1280,maxWidth:1280, minHeight: 800, maxHeight:800)
-            .onChange(of: selectedTab) { oldValue, newValue in
-                content = nil
-            }
+//            if showImmersiveTab {
+//                ImmersiveIntroView(appState: appState, content: $content, placementModel: $placementModel).tabItem { Label("Purchases", systemImage: "heart.fill")  }.tag(shopifyModel.collectionResponses.count + 1)
+//            }
+//        }
+    }
+    
+    func systemImageName(for collection:ShopifyCollectionResponse)->String {
+        switch collection.collection.id.rawValue {
+        default:
+            return "leaf"
         }
     }
 }
 
 #Preview {
-    DetailView(appState: TulaAppModel(), modelContent: TulaApp.defaultContent, content:.constant( TulaApp.defaultContent.first!), placementModel: .constant(nil))
+    DetailView(appState: .constant( TulaAppModel()), modelLoader: .constant(ModelLoader()), shopifyModel: .constant(ShopifyModel()), modelContent: .constant(TulaApp.defaultContent), content:.constant( nil), playerModel: .constant(PlayerModel()), placementModel: .constant(nil), currentIndex: .constant(0))
 }

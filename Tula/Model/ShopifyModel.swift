@@ -1,0 +1,464 @@
+//
+//  ShopifyModel.swift
+//  Tula
+//
+//  Created by Michael A Edgcumbe on 3/10/24.
+//
+
+import Foundation
+import Buy
+    
+public struct ShopifyCollectionResponse: Equatable, Identifiable, Hashable {
+    public static func == (lhs: ShopifyCollectionResponse, rhs: ShopifyCollectionResponse) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public let id:UUID = UUID()
+    public let collection:Storefront.Collection
+    public let productResponses:[ShopifyProductResponse]
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+
+public struct ShopifyProductResponse : Equatable, Identifiable {
+    public static func == (lhs: ShopifyProductResponse, rhs: ShopifyProductResponse) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public let id:UUID = UUID()
+    public let title:String
+    public let description:String
+    public let availableForSale:Bool
+    public let product:Storefront.Product
+    public let featuredImage:Storefront.Image?
+    public let images:[Storefront.Image]
+    public let variants:[Storefront.ProductVariant]
+}
+
+@Observable open class ShopifyModel {
+    
+    private let cache = CloudCache()
+    public var isAuthenticated:Bool {
+        return !shopifyAPIKey.isEmpty
+    }
+    private var shopifyAPIKey:String = ""
+    private var cartID:GraphQL.ID?
+    private var cart:Storefront.Cart?
+    private var client:Graph.Client {
+        get {
+            return Graph.Client.init(shopDomain: CloudCache.shopifyWebAddressString, apiKey: shopifyAPIKey)
+        }
+    }
+
+    public var collectionResponses = [ShopifyCollectionResponse]()
+    public var checkoutURL:URL? {
+        get {
+            return cart?.checkoutUrl
+        }
+    }
+    public func createCart() {
+        let createCartMutation = Storefront.buildMutation { $0
+            .cartCreate { $0
+                .cart { $0
+                    .id()
+                }
+            }
+        }
+        
+        let task = client.mutateGraphWith(createCartMutation) { response, error in
+            
+            if let id = response?.cartCreate?.cart?.id {
+                self.cartID = id
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
+    
+    public func variant(for content:ModelViewContent) {
+        
+    }
+        
+    public func line(for productID:String,quantity:Int32)->Storefront.CartLineInput {
+        let linesInput:Storefront.CartLineInput =
+            .create(merchandiseId:GraphQL.ID(rawValue: productID), quantity: .value(quantity))
+        
+        return linesInput
+    }
+    
+    public func addCartLines(_ lines:[Storefront.CartLineInput], cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let addLinesMutation = Storefront.buildMutation { $0
+            .cartLinesAdd(lines: lines, cartId: cartID) { $0
+                .cart({ $0
+                    .id()
+                    .lines(first:100){ $0
+                        .edges { $0
+                            .node({$0
+                                .id()
+                                .quantity()
+                                .merchandise({ $0
+                                    .onProductVariant { $0
+                                        .id()
+                                    }
+                                })
+                            })
+                        }
+                    }
+                    .cost({ $0
+                        .totalAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .subtotalAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .totalTaxAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                        .totalDutyAmount({ $0
+                            .amount()
+                            .currencyCode()
+                        })
+                    })
+                })
+            }
+        }
+        
+        let task = client.mutateGraphWith(addLinesMutation) { response, error in
+        
+            if let cart = response?.cartLinesAdd?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            } else {
+                cartCompletion(nil)
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
+    
+    public func removeLines(lineIds: [GraphQL.ID], cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let removeCartLinesMutation = Storefront.buildMutation { $0
+            .cartLinesRemove(cartId: cartID, lineIds: lineIds) { $0
+                .cart { $0
+                    .id()
+                }
+            }
+        }
+        let task = client.mutateGraphWith(removeCartLinesMutation) { response, error in
+            if let cart = response?.cartLinesRemove?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            } else {
+                cartCompletion(nil)
+            }
+            print(response.debugDescription)
+        }
+        task.resume()
+    }
+    
+    public func queryCart(cartCompletion: @escaping ((Storefront.Cart?)->())) {
+        guard let cartID = cartID else {
+            cartCompletion(nil)
+            return
+        }
+        let query = Storefront.buildQuery { $0
+            .cart(id:cartID) { $0
+                .id()
+                .createdAt()
+                .updatedAt()
+                .checkoutUrl()
+                .lines(first:100){ $0
+                    .edges { $0
+                        .node({$0
+                            .id()
+                            .quantity()
+                            .merchandise({ $0
+                                .onProductVariant { $0
+                                    .id()
+                                }
+                            })
+                            .attributes({ $0
+                                .key()
+                                .value()
+                            })
+                        })
+                    }
+                }
+                .attributes({ $0
+                    .key()
+                    .value()
+                })
+                .cost({ $0
+                    .totalAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .subtotalAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .totalTaxAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                    .totalDutyAmount({ $0
+                        .amount()
+                        .currencyCode()
+                    })
+                })
+            }
+        }
+        
+        let task = client.queryGraphWith(query) { response, error in
+            if let cart = response?.cart {
+                self.cart = cart
+                cartCompletion(self.cart)
+            }
+        }
+        task.resume()
+    }
+    
+    public func modelViewContent(for collectionID:String) -> [ModelViewContent] {
+        var newContent = [ModelViewContent]()
+        guard let response = collectionResponses.first(where: { response in
+            response.collection.id.rawValue == collectionID
+        }) else {
+            return newContent
+        }
+                
+        for productResponse in response.productResponses {
+            if !productResponse.product.availableForSale {
+                continue
+            }
+            
+            var imagesData = [ModelViewContentImageData]()
+            var variantsData = [ModelViewContentVariantData]()
+            for image in productResponse.images {
+                let newImageData = (image.url, Int(image.width ?? 0), Int(image.height ?? 0), image.altText ?? "")
+                imagesData.append(newImageData)
+            }
+            
+            for variant in productResponse.variants {
+                let newVariantData =  ModelViewContentVariantData(id:variant.id.rawValue, title:variant.title, amount:variant.price.amount, currencyCode: variant.price.currencyCode.rawValue, availableForSale:variant.availableForSale, quantityAvailable:Int(variant.quantityAvailable ?? 0))
+                variantsData.append(newVariantData)
+            }
+            
+            var featuredImageData:ModelViewContentImageData?
+            if let featuredImage = productResponse.featuredImage {
+                featuredImageData = (featuredImage.url, Int(featuredImage.width ?? 0), Int(featuredImage.height ?? 0), featuredImage.altText ?? "" )
+            }
+            
+            let modelContent = ModelViewContent(productId: productResponse.product.id.rawValue, title: productResponse.title, description: productResponse.description, featuredImage:featuredImageData, usdzModelName: usdzModelName(for: productResponse.product.id.rawValue), usdzFullSizeModelName: usdzModelName(for: productResponse.product.id.rawValue), imagesData: imagesData, localImages: [], variantPrices: variantsData)
+            print(productResponse.product.id.rawValue)
+            print(productResponse.title)
+            
+            newContent.append(modelContent)
+        }
+        
+        return newContent
+    }
+    
+    private func usdzModelName(for productID:String)->String {
+        switch productID {
+        case "gid://shopify/Product/4422296764474":
+            return "Cereus-forbesii-spiralis-Full"
+        case "gid://shopify/Product/7032845107258":
+            return "Euphorbia-abdelkuri-Silver-Full"
+        case "Monstera-pinnatipartita-siam_Full":
+            return "Monstera-pinnatipartita-siam_Full"
+        case "gid://shopify/Product/4422402572346":
+            return "Myrtillocactus-geometrizans-Fukurokuryuzinboku-Full"
+        case "Philodendron-gloriosum_Full":
+            return "Philodendron-gloriosum_Full"
+        default:
+            return ""
+        }
+    }
+    
+    public func connect() async throws {
+        shopifyAPIKey = try await cache.apiKey(for: .shopifyStorefront)
+        createCart()
+    }
+
+    public func fetchCollectionResponses(responsesCompletion: @escaping (([ShopifyCollectionResponse]?)->())) {
+        let query = Storefront.buildQuery { $0
+            .collections(first:50) { $0
+                .nodes { $0
+                    .id()
+                    .title()
+                    .products(first: 100) { $0
+                        .nodes { $0
+                            .id()
+                            .title()
+                            .productType()
+                            .description()
+                            .availableForSale()
+                            .featuredImage { image in
+                                image.id()
+                                image.url()
+                                image.width()
+                                image.height()
+                                image.altText()
+                            }
+                            .images(first: 10) { $0
+                                .nodes { $0
+                                    .id()
+                                    .url()
+                                    .width()
+                                    .height()
+                                    .altText()
+                                }
+                            }
+                            .priceRange { priceQuery in
+                                priceQuery.minVariantPrice { moneyQuery in
+                                    moneyQuery.amount()
+                                    moneyQuery.currencyCode()
+                                }
+                                priceQuery.maxVariantPrice { moneyQuery in
+                                    moneyQuery.amount()
+                                    moneyQuery.currencyCode()
+                                }
+                            }
+                            .variants(first: 50) { $0
+                                .nodes { $0
+                                    .id()
+                                    .title()
+                                    .price { $0
+                                        .amount()
+                                        .currencyCode()
+                                    }
+                                    .availableForSale()
+                                    .quantityAvailable()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        let task = client.queryGraphWith(query) { response, error in
+            if let error = error {
+                print(error)
+                responsesCompletion(nil)
+                return
+            }
+            if let collections = response?.collections.nodes {
+                var newCollectionResponses = [ShopifyCollectionResponse]()
+                collections.forEach { collection in
+                    var productResponses = [ShopifyProductResponse]()
+                    let products = collection.products.nodes
+                    for product in products {
+                        let response = ShopifyProductResponse(title: product.title, description: product.description, availableForSale: product.availableForSale, product: product, featuredImage: product.featuredImage, images: product.images.nodes, variants: product.variants.nodes)
+                        productResponses.append(response)
+                    }
+                    let collectionResponse = ShopifyCollectionResponse(collection: collection, productResponses: productResponses)
+                    newCollectionResponses.append(collectionResponse)
+                }
+                
+                responsesCompletion(newCollectionResponses)
+                
+            }
+            else {
+                responsesCompletion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    public func fetchProductDetails(for id: GraphQL.ID, productDetailsCompletion: @escaping ((ShopifyProductResponse?)->())) {
+        let query = Storefront.buildQuery { $0
+            .product(id: id) { $0
+                .id()
+                .title()
+                .productType()
+                .description()
+                .availableForSale()
+                .featuredImage { image in
+                    image.id()
+                    image.url()
+                    image.width()
+                    image.height()
+                    image.altText()
+                }
+                .images(first: 10) { $0
+                    .nodes { $0
+                        .id()
+                        .url()
+                        .width()
+                        .height()
+                        .altText()
+                    }
+                }
+                .priceRange { priceQuery in
+                    priceQuery.minVariantPrice { moneyQuery in
+                        moneyQuery.amount()
+                        moneyQuery.currencyCode()
+                    }
+                    priceQuery.maxVariantPrice { moneyQuery in
+                        moneyQuery.amount()
+                        moneyQuery.currencyCode()
+                    }
+                }
+                .variants(first: 50) { $0
+                    .nodes { $0
+                        .id()
+                        .title()
+                        .price { $0
+                            .amount()
+                            .currencyCode()
+                        }
+                        .availableForSale()
+                        .quantityAvailable()
+                    }
+                }
+            }
+        }
+
+        let task = client.queryGraphWith(query) { response, error in
+            if let error = error {
+                print(error)
+                productDetailsCompletion(nil)
+                return
+            }
+
+            
+            guard let response = response else {
+                productDetailsCompletion(nil)
+                return
+            }
+            
+            
+            guard let product  = response.product else {
+                productDetailsCompletion(nil)
+                return
+            }
+
+            let title = product.title
+            let description = product.description
+            let images   = product.images.nodes
+            let variants = product.variants.nodes
+            let availableForSale = product.availableForSale
+            let featuredImage = product.featuredImage
+            let productResponse = ShopifyProductResponse(title: title, description: description, availableForSale: availableForSale, product: product, featuredImage: featuredImage, images: images, variants: variants)
+            productDetailsCompletion(productResponse)
+
+        }
+
+        task.resume()
+    }
+}
